@@ -1,0 +1,25 @@
+Ingresó -h por lo que a continuación se presenta una ayuda sobre los parametros que pueden pasarse
+al compilar para configurar el Simpletron.
+
+* -m :
+    luego de "-m" se ingresa la cantidad de memoria (un numero entero) que tendra Simpletron. Si
+    no ingresa el parámetro, se considerara que tiene 50 palabras, donde cada palabra es una
+    instrucción. En el caso de no ingresar este parametro se asumira que la memoria necesaria es 50.
+    
+* -f :
+	luego de "-f" se ingresa el formato en el cual se quiere obtener la devolusion del programa (dump): ingresar "bin" o "txt" segun se requiera binario o texto.
+	En el caso de no ingresar este parametro se asumira que el formato de salida es txt.
+	
+Luego de los parametros que pueden ir en el orden que desee, se deben ingresar los archivos de los cuales se leeran las instrucciones.
+Para ellos, ingresar "-" si se leeran unicamente de stdin.
+En otro caso, ingrese el nombre de los achivos separados por espacios.
+Para indicar el formato decada uno de dichos archivos ingresar "b:" o "t:" al comienzo del nombre del archivo.
+Si no se ingresa el formato, se asumira que es de tipo txt.
+
+Ejemplos:
+
+./simpletron -f bin -m 30 -
+
+./simpletron t:archivo.sac
+
+./simpletron -m 60 b:archivo1.sac t:archivo2.txt
