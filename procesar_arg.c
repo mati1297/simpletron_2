@@ -8,8 +8,8 @@ status_t cargar_argumentos_por_omision (params *parametros) {
 	if (parametros == NULL)
 		return ST_ERROR_PUNTERO_NULO;
 		
-	parametros -> cant_memoria = MEMORIA_POR_OMISION;
-	parametros -> fmt_salida = FMT_TXT;
+	parametros->cant_memoria = MEMORIA_POR_OMISION;
+	parametros->fmt_salida = FMT_TXT;
 	
 	return ST_OK;
 }
@@ -18,18 +18,19 @@ status_t cargar_argumentos_por_omision (params *parametros) {
  * argv, un puntero a la estructura de parámetros donde se van a guardar
  * los parámetros ingresados por el usuario, y la cantidad de parámetros
  * ingresados para las validaciones y ciclos. Se asume que si se usa stdin
- * , sera en formato txt.Devuelve el estado por el nombre, informando así 
+ * será en formato txt. Devuelve el estado por el nombre, informando así 
  * si hay algún error */
 status_t procesar_argumentos (const int argc, const char *argv [], params *parametros, int *cant_archivos){
-	int i,j, cant_arg = 0;
+	int i,j, cant_arg = 0;															/*la cantidad de archivos despues podriamos hacer que salga de una estructura de simpletron
+																					 * o algo asi */
 	char *endp;
 	char *arg_validos[] ={
 		TXT_ARG_MEMORIA,
 		TXT_ARG_FMT_SALIDA,
 		TXT_ARG_AYUDA
 	};
-	status_t validacion;
-	if(!argv || !parametros){
+	status_t validacion;		/* me gusta el nombre st, como que validacion y estado no es lo mismo */
+	if(!argv || !parametros){												 /* y cant_archivos? por que no se valida? */
 		return ST_ERROR_PUNTERO_NULO;
 	}
 	/*al menos se debe ingresar el ejecutable y un archivo o el caracter indicador de stdin*/
@@ -52,11 +53,11 @@ status_t procesar_argumentos (const int argc, const char *argv [], params *param
 				/* Se guarda la cantidad de instrucciones a interpretar */
 				case ARG_MEMORIA:
 					i++;
-					parametros -> cant_memoria = strtol (argv[i], &endp, 10);
-					if (*endp) 
+					parametros->cant_memoria = strtol (argv[i], &endp, 10);
+					if (*endp) /*saco los espacios entre las flechas que moreno lo corrigio en el tp anterior*/
 						return ST_ERROR_ARGUMENTO_INVALIDO;
 
-					if (parametros -> cant_memoria <= 0)
+					if (parametros->cant_memoria <= 0)
 						return ST_ERROR_CANTIDAD_DE_MEMORIA_INVALIDA;
 					cant_arg ++;
 					break;
@@ -64,9 +65,9 @@ status_t procesar_argumentos (const int argc, const char *argv [], params *param
 				case ARG_FMT_SALIDA:
 					i++;
 					if (!strcmp(argv[i], TXT_INDICADOR_BINARIO))
-						parametros -> fmt_salida = FMT_BIN;
+						parametros->fmt_salida = FMT_BIN;
 					else if (!strcmp (argv[i], TXT_INDICADOR_TEXTO))
-						parametros -> fmt_salida = FMT_TXT;
+						parametros->fmt_salida = FMT_TXT;
 					else
 						return ST_ERROR_ARGUMENTO_INVALIDO;
 					cant_arg ++;
@@ -80,24 +81,25 @@ status_t procesar_argumentos (const int argc, const char *argv [], params *param
 					
 				default: break;
 			}
-		}
+		}		/* fijate que cant_arg solo cuenta 1 por cada PAR de argumentos, y por eso lo multiplicas por dos */
+				/* es realmente cant_arg? porque la cantidad posta son mas */
 	}
-	*cant_archivos = argc - 2*cant_arg - 1;
+	*cant_archivos = argc - 2*cant_arg - 1;				/*de aca en mas todavia no lei*/
 	/*en el caso en el que se ingrese que el archivo de entrada es "-" se asume que el nombre del archivo es stdin, es unico y el formato, txt*/
 	if(argv[2*cant_arg + 1][POS_FMT] == INDICADOR_STDIN){
-		parametros -> vector_datos_archivos = (archivos *) calloc (1, sizeof(archivos));
-		if(!(parametros -> vector_datos_archivos))
+		parametros->vector_datos_archivos = (archivos *) calloc (1, sizeof(archivos));
+		if(!(parametros->vector_datos_archivos))
 			return ST_ERROR_MEMORIA_INVALIDA;
-		parametros -> vector_datos_archivos -> fmt_entrada = FMT_TXT;
-		parametros -> vector_datos_archivos -> nombre_archivo = (char *) malloc (sizeof(char) * SIZE_ARCHIVO_OMISION);
-		if(!(parametros -> vector_datos_archivos -> nombre_archivo))
+		parametros->vector_datos_archivos->fmt_entrada = FMT_TXT;
+		parametros->vector_datos_archivos->nombre_archivo = (char *) malloc (sizeof(char) * SIZE_ARCHIVO_OMISION);
+		if(!(parametros->vector_datos_archivos->nombre_archivo))
 			return ST_ERROR_MEMORIA_INVALIDA;
-		strcpy(parametros -> vector_datos_archivos -> nombre_archivo, ARCHIVO_POR_OMISION);
+		strcpy(parametros->vector_datos_archivos->nombre_archivo, ARCHIVO_POR_OMISION);
 		return ST_OK;
 	}
 	/*en el caso en el que se ingresen los nombres de los archivos*/
-	parametros -> vector_datos_archivos = (archivos *) calloc (*cant_archivos, sizeof(archivos));
-	if(!(parametros -> vector_datos_archivos))
+	parametros->vector_datos_archivos = (archivos *) calloc (*cant_archivos, sizeof(archivos));
+	if(!(parametros->vector_datos_archivos))
 		return ST_ERROR_MEMORIA_INVALIDA;
 	for(i = 2*cant_arg + 1; i < argc; i++){
 		/*primero se ve si se indico el formato para el archivo de entrada correspondiente a la iteracion.
@@ -106,16 +108,16 @@ status_t procesar_argumentos (const int argc, const char *argv [], params *param
 		if((endp = strchr(argv[i], DELIM))){
 			puts("hola");
 			if(argv[i] [POS_FMT] == INDICADOR_BIN)
-				parametros -> vector_datos_archivos[i].fmt_entrada = FMT_BIN;
+				parametros->vector_datos_archivos[i].fmt_entrada = FMT_BIN;
 			else if (argv[i] [POS_FMT] == INDICADOR_TXT){
-				parametros -> vector_datos_archivos[i].fmt_entrada = FMT_TXT;
+				parametros->vector_datos_archivos[i].fmt_entrada = FMT_TXT;
 			}
 			else return ST_ERROR_ARGUMENTO_INVALIDO;
-			parametros -> vector_datos_archivos[i].nombre_archivo = endp + 1;
+			parametros->vector_datos_archivos[i].nombre_archivo = endp + 1;
 		}
 		else {
-			parametros -> vector_datos_archivos[i].fmt_entrada = FMT_TXT;
-			parametros -> vector_datos_archivos[i].nombre_archivo = argv[i];
+			parametros->vector_datos_archivos[i].fmt_entrada = FMT_TXT;
+			parametros->vector_datos_archivos[i].nombre_archivo = argv[i];
 		}
 	}
 	return ST_OK;
