@@ -53,14 +53,14 @@ typedef enum{
 
 typedef struct{
 	fmt_t fmt_entrada;
-	char *nombre_archivo;
+	char * nombre_archivo;
 }archivos;
 
 typedef struct{
 	size_t cant_memoria;
 	fmt_t fmt_salida;
 	int cant_archivos;
-	archivos *vector_datos_archivos;
+	archivos * vector_datos_archivos;
 }params;
 
 status_t procesar_argumentos(const int argc, const char *argv [], params *parametros, int *cant_archivos);
