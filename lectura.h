@@ -2,6 +2,7 @@
 #define LECTURA__H
 
 #include "herramientas.h"
+#include "error.h"
 
 #define MAX_LARGO 150
 #define DELIMITADOR_COMENTARIO ';'

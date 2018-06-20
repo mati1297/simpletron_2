@@ -1,6 +1,8 @@
 #ifndef SIMPLETRON__H
 #define SIMPLETRON__H 1
 
+#include "vector.h"
+
 #define MAX_OPERANDO 99
 #define MASK_OPCODE 0xFE00
 #define SHIFT_OPCODE 9
@@ -10,8 +12,9 @@
 typedef short int palabra_t;
 
 typedef struct simpletron {
-	palabra_t ** vector;
+	vector_t * vector;
 	size_t cantidad_de_memoria;
+	size_t contador;
 	palabra_t registro;
 	palabra_t acc;
 } simpletron_t;

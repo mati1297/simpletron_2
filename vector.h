@@ -2,6 +2,7 @@
 #define VECTOR__H 1
 
 #include "simpletron.h"
+#include "error.h"
 
 
 typedef struct vector {

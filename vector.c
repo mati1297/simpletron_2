@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "vector.h"
 #include "simpletron.h"
+#include "error.h"
 
 /* CUANDO SE HAGAN LAS FUNCIONES LAS CUALES ACA SE USA SU PUNTERO, HAY QUE MODIFICAR QUE PARAMETROS TIENEN (TIPOS,ETC)*/
 

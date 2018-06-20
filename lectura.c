@@ -6,8 +6,11 @@
 #include "procesar_arg.c"
 #include "vector.h"
 #include "herramientas.h"
+#include "error.h"
 
-status_t leer_guardar (archivos * archivo, vector_t * vector) {
+/*status_t cargar_lista_archivos*/
+
+status_t leer_guardar_archivo (archivos * archivo, vector_t * vector) {
 	FILE * file;
 	char buffer [MAX_LARGO], *endp;
 	int aux;
@@ -17,7 +20,7 @@ status_t leer_guardar (archivos * archivo, vector_t * vector) {
 		return ST_ERROR_PUNTERO_NULO;
 		
 	if(!(file = fopen(archivo->nombre_archivo, "r")))
-		return ST_ERROR_ARCHIVO;
+		return ST_ERROR_LECTURA_ARCHIVO;
 		
 	if(archivo->fmt_entrada == FMT_TXT) {
 		while(fgets(buffer, MAX_LARGO, file)) {
@@ -28,17 +31,30 @@ status_t leer_guardar (archivos * archivo, vector_t * vector) {
 			
 			/*LO HAGO PARTIENDOLO*/
 			if(aux / DIVISOR > MAX_OPERANDO)
-				return /*error??*/
+				return /*error??*/;
 			palabra_guardar_opcode(&dato, aux / DIVISOR);
 			if(aux % DIVISOR > MAX_OPCODE)
-				return /*idem arriba*/
+				return /*idem arriba*/;
 			palabra_guardar_opcode(&dato, aux % DIVISOR);
-			/*seguir aca*/
 		}
-			
-		
+	}
+		/*Puede hacer falta hacer un fgets mas para llegar a eof*/
+	else {
+		while(fread(&dato, sizeof(int), 1, file)) {
+			/*LO HAGO PARTIENDOLO*/
+			if(aux / DIVISOR > MAX_OPERANDO)
+				return /*error??*/;
+			palabra_guardar_opcode(&dato, aux / DIVISOR);
+			if(aux % DIVISOR > MAX_OPCODE)
+				return /*idem arriba*/;
+			palabra_guardar_opcode(&dato, aux % DIVISOR);
+		}
 	}
 	
+	if(!feof(file))
+			return ST_ERROR_LECTURA_ARCHIVO;
+	if(ferror(file))
+			return ST_ERROR_LECTURA_ARCHIVO;
 }
 
 
