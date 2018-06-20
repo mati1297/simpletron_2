@@ -33,7 +33,7 @@ void vector_destruir (vector_t ** v, void (*destruir) (palabra_t *)) {
 	}
 }
 
-status_vector vector_guardar (vector_t * v, size_t i, palabra_t * dato, palabra_t * (*copiar)(palabra_t*), void(*destruir)(palabra_t *)) {
+status_vector vector_guardar (vector_t * v, size_t i, palabra_t * dato, palabra_t * (*copiar)(palabra_t *), void(*destruir)(palabra_t *)) {
 	palabra_t * aux;
 	if (!v)
 		return ST_VEC_ERROR_PUNTERO_NULO;

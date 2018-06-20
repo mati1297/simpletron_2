@@ -10,11 +10,15 @@
 
 /*status_t cargar_lista_archivos*/
 
+/*Pueden faltar cosas, revisar, creo que esta todo
+ * ESTA FUCION SE VA A LLAMAR POR CADA ARCHIVO QUE SE LEA*/
 status_t leer_guardar_archivo (archivos * archivo, vector_t * vector) {
 	FILE * file;
 	char buffer [MAX_LARGO], *endp;
 	int aux;
+	size_t i;
 	palabra_t dato;
+	status_vector st_vec;
 	
 	if(!archivo)
 		return ST_ERROR_PUNTERO_NULO;
@@ -23,31 +27,29 @@ status_t leer_guardar_archivo (archivos * archivo, vector_t * vector) {
 		return ST_ERROR_LECTURA_ARCHIVO;
 		
 	if(archivo->fmt_entrada == FMT_TXT) {
-		while(fgets(buffer, MAX_LARGO, file)) {
+		for(i = 0; fgets(buffer, MAX_LARGO, file); i++) {
 			if(!recortar_espacios(buffer))
 				continue;
 			cortar_delimitador(buffer, DELIMITADOR_COMENTARIO);
-			aux = (palabra_t) strtol(buffer, &endp, 10);
+			aux = (int) strtol(buffer, &endp, 10);
+			if(!*endp)
+				return ST_ERROR_INSTRUCCION_INVALIDA;
 			
 			/*LO HAGO PARTIENDOLO*/
-			if(aux / DIVISOR > MAX_OPERANDO)
-				return /*error??*/;
-			palabra_guardar_opcode(&dato, aux / DIVISOR);
-			if(aux % DIVISOR > MAX_OPCODE)
-				return /*idem arriba*/;
-			palabra_guardar_opcode(&dato, aux % DIVISOR);
+			/*falta validar, no se QUE hay que validar*/
+			dato = palabra_dividir(aux);
+			if((st_vec = vector_guardar(vector, i, &dato, &palabra_copiar, &palabra_destruir)) != ST_VEC_OK)
+				return st_vec; 
+			
 		}
 	}
 		/*Puede hacer falta hacer un fgets mas para llegar a eof*/
 	else {
-		while(fread(&dato, sizeof(int), 1, file)) {
+		for(i = 0; fread(&aux, sizeof(int), 1, file); i++) {
 			/*LO HAGO PARTIENDOLO*/
-			if(aux / DIVISOR > MAX_OPERANDO)
-				return /*error??*/;
-			palabra_guardar_opcode(&dato, aux / DIVISOR);
-			if(aux % DIVISOR > MAX_OPCODE)
-				return /*idem arriba*/;
-			palabra_guardar_opcode(&dato, aux % DIVISOR);
+			/*falta validar, no se QUE hay que validar*/
+			dato = palabra_dividir(aux);
+			vector_guardar(vector, i, &dato, &palabra_copiar, &palabra_destruir);
 		}
 	}
 	
@@ -55,6 +57,8 @@ status_t leer_guardar_archivo (archivos * archivo, vector_t * vector) {
 			return ST_ERROR_LECTURA_ARCHIVO;
 	if(ferror(file))
 			return ST_ERROR_LECTURA_ARCHIVO;
+	fclose(file);
+	return ST_OK;
 }
 
 

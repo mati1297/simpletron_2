@@ -1,6 +1,7 @@
 #ifndef VECTOR__H
 #define VECTOR__H 1
 
+#include <stdio.h>
 #include "simpletron.h"
 #include "error.h"
 
