@@ -12,6 +12,6 @@
 #define DELIMITADOR_COMENTARIO ';'
 
 
-status_t leer_guardar (archivos * archivo, vector_t * vector);
+status_t leer_guardar (archivo_t * archivo, vector_t * vector);
 
 #endif

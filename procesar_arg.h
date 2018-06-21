@@ -28,26 +28,26 @@ typedef enum {
 	ARG_FMT_SALIDA = 1,
 	ARG_AYUDA = 2,
 	ARG_INVALIDO = 3
-}arg_t;
+} arg_t;
 
-typedef enum{
+typedef enum {
 	FMT_TXT = 0,
 	FMT_BIN = 1
 } fmt_t;
 
-typedef struct{
+typedef struct archivo {
 	fmt_t fmt_entrada;
 	const char * nombre_archivo;
-}archivos;
+} archivo_t;
 
-typedef struct{
+typedef struct parametros {
 	size_t cant_memoria;
 	fmt_t fmt_salida;
 	int cant_archivos;
-	archivos * vector_datos_archivos;
-}params;
+	archivo_t * vector_datos_archivos;
+} params_t;
 
-status_t procesar_argumentos(const int argc, const char *argv [], params *parametros, int *cant_archivos);
-status_t cargar_argumentos_por_omision (params *parametros);
+status_t procesar_argumentos(const int argc, const char * argv [], params_t * parametros, int * cant_archivos);
+status_t cargar_argumentos_por_omision (params_t * parametros);
 
 #endif

@@ -22,7 +22,7 @@ typedef struct simpletron {
 } simpletron_t;
 
 /*esto no se si dejarlo, vamos viendo como se va desarrollando todo
-typedef struct {
+typedef struct archivo {
 	simpletron_t simpletron;
 	char * nombre_archivo;
 } archivo_t;*/

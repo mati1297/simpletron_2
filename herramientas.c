@@ -19,7 +19,7 @@ char * recortar_espacios (char * s) {
 
 void cortar_delimitador (char * s, char delimitador) {
 	char * busqueda;
-	busqueda = strchr(s, delimitador);
-	if(busqueda)
+	busqueda = strchr (s, delimitador);
+	if (busqueda)
 		*busqueda = '\0';
 }
