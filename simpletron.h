@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "vector.h"
 
 #define MAX_OPERANDO 99
 #define MASK_OPCODE 0xFE00

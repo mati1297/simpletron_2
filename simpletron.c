@@ -3,6 +3,8 @@
 #include "simpletron.h"
 #include "vector.h"
 
+void
+
 /*esta funcion supone que los valores son correctos*/
 void palabra_guardar_opcode (palabra_t * palabra, int opcode) {
 	(*palabra) &= ~MASK_OPCODE;

@@ -6,6 +6,7 @@
 #include "vector.h"
 #include "herramientas.h"
 #include "error.h"
+#include "procesar_arg.h"
 
 #define MAX_LARGO 150
 #define DELIMITADOR_COMENTARIO ';'

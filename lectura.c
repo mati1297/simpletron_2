@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lectura.h"
+#include "vector.h"
 #include "simpletron.h"
 #include "procesar_arg.c"
-#include "vector.h"
 #include "herramientas.h"
 #include "error.h"
 

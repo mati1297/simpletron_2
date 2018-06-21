@@ -37,7 +37,7 @@ typedef enum{
 
 typedef struct{
 	fmt_t fmt_entrada;
-	char * nombre_archivo;
+	const char * nombre_archivo;
 }archivos;
 
 typedef struct{
