@@ -1,5 +1,4 @@
 #include "dump.h"
-typedef short int palabra_t;
 
 /*recibe un puntero al comienzo de una lista y el formato en el que se desea imprimir el dump
  * En el caso que se quiera formato texto, se imprime con el formato indicado en la consigna del TP.
@@ -12,27 +11,27 @@ status_t imprimir_dump(nodo_t *lista, fmt_t formato){
 		if(formato == 0){/*si el formato de salida es txt*/
 			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "wt")))
 				return ST_ERROR_ARCHIVO;
-			while(!(lista -> siguiente)){
-				if((st = imprimir_registros (lista -> dato, f_out)) != ST_OK) {
+			while(!(lista->siguiente)){
+				if((st = imprimir_registros (lista->dato, f_out)) != ST_OK) {
 					fclose (f_out);
 					return st;
 				}
-				if((st = imprimir_memoria (lista -> dato -> vector, lista -> dato -> cantidad_de_memoria, f_out)) != ST_OK) {
+				if((st = imprimir_memoria (lista->dato->vector, lista->dato->cantidad_de_memoria, f_out)) != ST_OK) {
 					fclose (f_out);
 					return st;
 				}
 				
-				lista -> siguiente = lista -> siguiente -> siguiente;
+				lista->siguiente = lista->siguiente->siguiente;
 			}
 		else{ /*si el formato de salida es binario*/
 			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_BIN, "wb")))
 				return ST_ERROR_ARCHIVO;
 			while(!(lista -> siguiente)){
-				if((st = imprimir_bin(lista -> dato, f_out, lista -> dato -> cantidad_de_memoria)) != ST_OK) {
+				if((st = imprimir_bin(lista->dato, f_out, lista->dato->cantidad_de_memoria)) != ST_OK) {
 					fclose (f_out);
 					return st;
 				}
-				lista -> siguiente = lista -> siguiente -> siguiente;
+				lista->siguiente = lista->siguiente->siguiente;
 			}
 		}
 		fclose(f_out);
@@ -47,15 +46,15 @@ status_t imprimir_registros (const simpletron_t *simpletron, FILE *f_output) {
 		return ST_ERROR_PUNTERO_NULO;
 	fprintf(f_output, "\n%s:\n", MSJ_REGISTROS);
 	fprintf(f_output, "%16s", MSJ_ACC);
-	fprintf(f_output, "%9d\n", simpletron -> acc);
+	fprintf(f_output, "%9d\n", simpletron->acc);
 	fprintf(f_output, "%16s", MSJ_CONTADOR);
-	fprintf(f_output, "%9lu\n", simpletron -> contador);
+	fprintf(f_output, "%9lu\n", simpletron->contador);
 	fprintf(f_output, "%16s", MSJ_INSTRUCCION);
-	fprintf(f_output, "%+9d\n", simpletron -> registro);
+	fprintf(f_output, "%+9d\n", simpletron->registro);
 	fprintf(f_output, "%16s", MSJ_OPCODE);
-	fprintf(f_output, "%16d\n", palabra_leer_opcode(simpletron -> registro));
+	fprintf(f_output, "%16d\n", palabra_leer_opcode(simpletron->registro));
 	fprintf(f_output, "%16s", MSJ_OPERANDO);
-	fprintf(f_output, "%16d\n", palabra_leer_operando(simpletron -> registro));
+	fprintf(f_output, "%16d\n", palabra_leer_operando(simpletron->registro));
 	return ST_OK;
 }
 
@@ -71,7 +70,7 @@ status_t imprimir_memoria (const vector_t *vector_memoria, long cantidad_de_memo
 	if (f_output == NULL)
 		return ST_ERROR_PUNTERO_NULO;
 	fprintf(f_output,"%s", MSJ_MEMORIA);
-	if(vector_memoria == NULL)
+	if(vector_memoria == NULL) /*Si es nulo, esta definido como vector vacio, entonces no se imprime nada*/
 		return ST_OK;
 	for(i = 0; i < cantidad_de_memoria; i++){
 		if(!(i % CANT_COLS)){
@@ -84,6 +83,9 @@ status_t imprimir_memoria (const vector_t *vector_memoria, long cantidad_de_memo
 	return ST_OK;
 }
 
+/*Recibe un puntero a la estructura vector_t y un entero para iterar.
+ * Imprime la representacion ascii de la memoria en el mismo renglon.
+ * En el caso de que se tenga un caracter no imprimible, se lo reemplaza por un punto*/
 void imprimir_ascii(const vector_t *vector_memoria, int i){
 	palabra_t aux;
 	char c;
@@ -98,14 +100,17 @@ void imprimir_ascii(const vector_t *vector_memoria, int i){
 	}
 }
 
+/*Recibe un puntero a una estructura simpletron de donde obtendra los datos a imprimir,
+ * un archivo en el cual imprimira y la cant_memoria a imprimir.
+ * Imprime en formato BigEndian unicamente la memoria de simpletron.
+ * Devuelve por el nombre un estado que indica si hubo algun error y cual fue*/
 status_t imprimir_bin(const simpletron_t *simpletron, FILE *f_output, size_t cant_memoria){
 	int i;
-	if(f_output == NULL)
+	if(!f_output || !simpletron)
 		return ST_ERROR_PUNTERO_NULO;
-	if(simpletron == NULL)
-		return ST_OK;
 	for (i = 0; i < cant_memoria; i++){
-		fwrite(&(simpletron->vector[i]),sizeof(palabra_t), 1, f_output);
+		if((fwrite(&(simpletron->vector[i]),sizeof(palabra_t), 1, f_output)) != 1){
+			return ST_ERROR_ARCHIVO;
 	}
 	return ST_OK;
 }
