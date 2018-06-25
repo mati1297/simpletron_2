@@ -22,6 +22,7 @@
 #define DELIM ':'
 #define MAX_STR 50
 #define SIZE_ARCHIVO_OMISION 5
+#define CANT_ARG_MODIF 2
 
 typedef enum {
 	ARG_MEMORIA = 0,

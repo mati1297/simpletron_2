@@ -21,16 +21,16 @@ status_t cargar_argumentos_por_omision (params_t *parametros) {
  * será en formato txt. Devuelve el estado por el nombre, informando así 
  * si hay algún error */
 status_t procesar_argumentos (const int argc, const char * argv [], params_t * parametros, int * cant_archivos){
-	int i, j, cant_arg = 0;															/*la cantidad de archivos despues podriamos hacer que salga de una estructura de simpletron
+	int i, j, cant_modif = 0;															/*la cantidad de archivos despues podriamos hacer que salga de una estructura de simpletron
 																					 * o algo asi */
 	char * endp;
-	char * arg_validos [] = {
+	const char * arg_validos [] = {
 		TXT_ARG_MEMORIA,
 		TXT_ARG_FMT_SALIDA,
 		TXT_ARG_AYUDA
 	};
-	status_t st;		/* me gusta el nombre st, como que validacion y estado no es lo mismo */
-	if(!argv || !parametros) {												 /* y cant_archivos? por que no se valida? */
+	status_t st;		
+	if(!argv || !parametros || !cant_archivos) {												 
 		return ST_ERROR_PUNTERO_NULO;
 	}
 	/*al menos se debe ingresar el ejecutable y un archivo o el caracter indicador de stdin*/
@@ -54,12 +54,12 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 				case ARG_MEMORIA:
 					i++;
 					parametros->cant_memoria = strtol (argv[i], &endp, 10);
-					if (*endp) /*saco los espacios entre las flechas que moreno lo corrigio en el tp anterior*/
+					if (*endp) 
 						return ST_ERROR_ARGUMENTO_INVALIDO;
 
 					if (parametros->cant_memoria <= 0)
 						return ST_ERROR_CANTIDAD_DE_MEMORIA_INVALIDA;
-					cant_arg ++;
+					cant_modif = cant_modif + CANT_ARG_MODIF;
 					break;
 				/* Se guarda el formato de salida*/	
 				case ARG_FMT_SALIDA:
@@ -70,20 +70,19 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 						parametros->fmt_salida = FMT_TXT;
 					else
 						return ST_ERROR_ARGUMENTO_INVALIDO;
-					cant_arg ++;
+					cant_modif = cant_modif + CANT_ARG_MODIF;
 					break;
 
 				/* Llama a la función de impresión de la ayuda */
 				case ARG_AYUDA:
 					return ST_HELP;
 					
-				default: 
-					break;
+				default: break; 
 			}
 		}		/* fijate que cant_arg solo cuenta 1 por cada PAR de argumentos, y por eso lo multiplicas por dos */
 				/* es realmente cant_arg? porque la cantidad posta son mas */
 	}
-	*cant_archivos = argc - 2*cant_arg - 1;				/*de aca en mas todavia no lei*/
+	*cant_archivos = argc - cant_modif - 1;				/*de aca en mas todavia no lei*/
 	/*en el caso en el que se ingrese que el archivo de entrada es "-" se asume que el nombre del archivo es stdin, es unico y el formato, txt*/
 	if (argv[2*cant_arg + 1] [POS_FMT] == INDICADOR_STDIN) {
 		parametros->vector_datos_archivos = (archivo_t *) calloc (1, sizeof(archivo_t));
