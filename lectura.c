@@ -43,7 +43,9 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 		return ST_ERROR_PUNTERO_NULO;
 		
 	if (archivo->fmt_entrada == FMT_TXT) {
-		if (!(file = fopen(archivo->nombre_archivo, "rt")))
+		if (!strcmp(archivo->nombre_archivo, INDICADOR_STDIN))
+			file = stdin;
+		else if (!(file = fopen(archivo->nombre_archivo, "rt")))
 			return ST_ERROR_LECTURA_ARCHIVO;
 		for (i = 0; fgets (buffer, MAX_LARGO, file); i++) {
 			if (i > memoria_pedida) {

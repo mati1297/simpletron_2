@@ -11,18 +11,21 @@
 #define TXT_ARG_MEMORIA "-m"
 #define TXT_ARG_FMT_SALIDA "-f"
 #define TXT_ARG_AYUDA "-h"
+#define TXT_ARG_AYUDA_EXTENDIDO "--helped"
+#define TXT_ARG_FMT_SALIDA_EXTENDIDO "--format"
+#define TXT_ARG_MEMORIA_EXTENDIDO "--memory"
 #define TXT_INDICADOR_BINARIO "bin"
 #define TXT_INDICADOR_TEXTO "txt"
 #define MAX_MODIFICADORES 2
 #define POS_FMT 0
-#define INDICADOR_STDIN '-'
-#define INDICADOR_BIN 'b'
-#define INDICADOR_TXT 't'
-#define ARCHIVO_POR_OMISION "stdin"
+#define INDICADOR_STDIN "-"
+#define INDICADOR_BIN "b:"
+#define INDICADOR_TXT "t:"
 #define DELIM ':'
 #define MAX_STR 50
 #define SIZE_ARCHIVO_OMISION 5
 #define CANT_ARG_MODIF 2
+#define POSICION_COMIENZO_ARCHIVO 2
 
 typedef enum {
 	ARG_MEMORIA = 0,
@@ -50,5 +53,6 @@ typedef struct parametros {
 
 status_t procesar_argumentos(const int argc, const char * argv [], params_t * parametros);
 status_t cargar_argumentos_por_omision (params_t * parametros);
+void liberar_vector_archivos (archivo_t * archivos);
 
 #endif
