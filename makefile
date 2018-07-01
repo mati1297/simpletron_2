@@ -35,9 +35,9 @@ vector.o: vector.c vector.h simpletron.h error.h tda_lista.h
 	$(CC) $(CFLAGS) -o vector.o -c vector.c
 herramientas.o: herramientas.c herramientas.h idioma.h error.h simpletron.h
 	$(CC) $(CFLAGS) -o herramientas.o -c herramientas.c
-tda_lista_ite.o: tda_lista_ite.c tda_lista.h types.h
+tda_lista_ite.o: tda_lista_ite.c tda_lista.h
 	$(CC) $(CFLAGS) -o tda_lista_ite.o -c tda_lista_ite.c
-tda_lista_rec.o: tda_lista_rec.c tda_lista.h types.h
+tda_lista_rec.o: tda_lista_rec.c tda_lista.h
 	$(CC) $(CFLAGS) -o tda_lista_rec.o -c tda_lista_rec.c
 	
 clean: rm *.o

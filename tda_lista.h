@@ -29,7 +29,7 @@
 #define TDA_LISTA__H
 
 #include <stdio.h>
-#include "../lib/types.h"
+#include "types.h"
 /* en types.h están definidos los tipos:
 typedef enum retval {
   RV_SUCCESS = 0,

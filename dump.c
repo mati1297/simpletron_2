@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <ctype.h>
+#include "error.h"
+#include "tda_lista.h"
+#include "simpletron.h"
+#include "vector.h"
 #include "dump.h"
 
 /*recibe un puntero al comienzo de una lista y el formato en el que se desea imprimir el dump

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "lectura.h"
 #include "vector.h"
@@ -7,7 +6,7 @@
 #include "procesar_arg.c"
 #include "herramientas.h"
 #include "error.h"
-#include "./lista/tda_lista.h"
+#include "tda_lista.h"
 
 
 
@@ -19,11 +18,14 @@ status_t crear_cargar_lista_simpletron (lista_t lista, params_t * parametros) {
 	LISTA_crear(&lista);
 	for (i = 0; i < parametros->cant_archivos; i++) {
 		simpletron = simpletron_crear (parametros->cant_memoria);
-		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, parametros->cant_archivos)) != ST_OK)
+		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, parametros->cant_archivos)) != ST_OK) {
+			LISTA_destruir(&lista, &simpletron_borrar);
 			return st;
-		if(LISTA_insertar_al_final(&lista, simpletron) != RV_SUCCESS)
-				LISTA_destruir(&lista, &simpletron_borrar) != RV_SUCCESS;
+		}
+		if(LISTA_insertar_al_final(&lista, simpletron) != RV_SUCCESS) {
+			LISTA_destruir(&lista, &simpletron_borrar);
 			return ST_ERROR_LISTA;
+		}
 	}
 	return ST_OK;
 }

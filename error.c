@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "error.h"
 #include "idioma.h"
+#include "tda_lista.h"
+#include "simpletron.h"
 
 void imprimir_error (status_t st) {
 	
@@ -38,8 +40,8 @@ void imprimir_error_simpletron (status_simpletron st) {
 
 void imprimir_error_lista (retval_t st) {
 	static char * error [MAX_ERROR_STR] = {
-		MSJ_NO_ERROR,
-		
+		MSJ_NO_ERROR
+	};
 /*		
 		  RV_SUCCESS = 0,
 		  RV_ILLEGAL = 1,

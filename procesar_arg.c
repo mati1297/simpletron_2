@@ -1,7 +1,7 @@
 #include <stdlib.h>
+#include <string.h>
 #include "procesar_arg.h"
 #include "error.h"
-#include <string.h>
 
 status_t cargar_argumentos_por_omision (params_t * parametros) {
 	if (parametros == NULL)

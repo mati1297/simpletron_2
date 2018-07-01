@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "simpletron.h"
 #include "vector.h"
-#include "./lista/tda_lista.h"
+#include "tda_lista.h"
 
 
 /*Funcion que se encarga de cargar en el vector de punteros a funcion todas
