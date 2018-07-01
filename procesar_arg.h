@@ -48,7 +48,7 @@ typedef struct parametros {
 	archivo_t * vector_datos_archivos;
 } params_t;
 
-status_t procesar_argumentos(const int argc, const char * argv [], params_t * parametros, int * cant_archivos);
+status_t procesar_argumentos(const int argc, const char * argv [], params_t * parametros);
 status_t cargar_argumentos_por_omision (params_t * parametros);
 
 #endif

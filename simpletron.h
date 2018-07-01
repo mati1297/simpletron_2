@@ -94,5 +94,7 @@ status_simpletron simpletron_jnz (simpletron_t * simpletron);
 status_simpletron simpletron_djnz (simpletron_t * simpletron);
 void cargar_vector_funciones (funcion_t * vector);
 funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode);
+status_simpletron simpletron_borrar (simpletron_t * simpletron);
+simpletron_t * simpletron_crear (size_t memoria_vector);
 
 #endif

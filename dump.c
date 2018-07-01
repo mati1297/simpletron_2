@@ -5,7 +5,7 @@
  * Si se quiere binario, se imprimen los datos necesarios uno atras de otro sin espacios ni comentarios.
  * Abre los archivos con el formato indicado utilizando un nombre standard.
  * Por el nombre devuelve un estado que indica si fallo o no la funcion*/
-status_t imprimir_dump(nodo_t *lista, fmt_t formato){
+status_t imprimir_dump(lista_t  lista, fmt_t formato){
 	FILE *f_out;
 	status_t st;
 		if(formato == 0){/*si el formato de salida es txt*/

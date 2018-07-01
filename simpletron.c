@@ -46,7 +46,7 @@ void cargar_vector_funciones (funcion_t * vector) {
  * distintos nodos de la lista, y a su vez entre las ordenes de cada programa.
  * Esto ultimo lo hace buscando la funcion que le corresponde al opcode con la funcion
  * buscar_vector_funciones que devuelve un puntero a funcion*/
-status_simpletron ejecutar_simpletron (lista_t lista/*LISTA AHRE*/) {
+status_simpletron ejecutar_simpletron (lista_t lista) {
 	funcion_t funciones[CANTIDAD_DE_FUNCIONES];
 	funcion_simpletron funcion;
 	simpletron_t * simpletron;
@@ -288,7 +288,7 @@ int palabra_unir (palabra_t palabra) {
 palabra_t palabra_dividir (int numero) {
 	palabra_t palabra;
 	palabra_guardar_opcode (&palabra, numero / DIVISOR);
-	palabra_guardar_opcode (&palabra, numero % DIVISOR);
+	palabra_guardar_operando (&palabra, numero % DIVISOR);
 	return palabra;
 }
 
@@ -306,6 +306,23 @@ void palabra_destruir (palabra_t * palabra) {
 	if (palabra)
 		free (palabra);
 }
+
+simpletron_t * simpletron_crear (size_t memoria_vector) {
+	simpletron_t * simpletron;
+	simpletron = (simpletron_t *) calloc (1,  sizeof(simpletron_t));
+	if(!(simpletron->vector = vector_crear(memoria_vector)))
+		free(simpletron);
+	return simpletron;
+}
+/*ACA OJO QUE JODE LO DE RETVAL XD*/
+void simpletron_borrar (simpletron_t * simpletron) {
+	if(simpletron) {
+		if(simpletron->vector)
+			vector_destruir(&(simpletron->vector), &palabra_destruir);
+	}
+}
+
+
 
 
 

@@ -120,4 +120,9 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 	}
 	return ST_OK;
 }
+
+void liberar_vector_archivos (archivo_t * archivos) {
+	if (archivos)
+		free(archivos);
+}
 		

@@ -7,8 +7,27 @@
 #include "procesar_arg.c"
 #include "herramientas.h"
 #include "error.h"
+#include "./lista/tda_lista.h"
 
-/*status_t cargar_lista_archivos*/
+
+
+
+status_t crear_cargar_lista_simpletron (lista_t lista, params_t * parametros) {
+	size_t i;
+	status_t st;
+	simpletron_t * simpletron;
+	LISTA_crear(&lista);
+	for (i = 0; i < parametros->cant_archivos; i++) {
+		simpletron = simpletron_crear (parametros->cant_memoria);
+		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, parametros->cant_archivos)) != ST_OK)
+			return st;
+		if(LISTA_insertar_al_final(&lista, simpletron) != RV_SUCCESS)
+				LISTA_destruir(&lista, &simpletron_borrar) != RV_SUCCESS;
+			return ST_ERROR_LISTA;
+	}
+	return ST_OK;
+}
+
 
 /*Pueden faltar cosas, revisar, creo que esta todo
  * ESTA FUCION SE VA A LLAMAR POR CADA ARCHIVO QUE SE LEA*/

@@ -22,7 +22,7 @@
 #define CARAC_IMPRIMIBLE '.'
 #define CANT_COLS 7
 
-status_t imprimir_dump(nodo_t *lista, fmt_t formato);
+status_t imprimir_dump(lista_t lista, fmt_t formato);
 status_t imprimir_registros (const struct simpletron * simpletron, FILE * f_output);
 status_t imprimir_memoria (const vector_t *vector_memoria, long cantidad_de_memoria, FILE * f_output);
 void imprimir_ascii(const vector_t *vector_memoria, int i);
