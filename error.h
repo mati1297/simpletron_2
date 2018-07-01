@@ -1,6 +1,8 @@
 #ifndef ERROR__H
 #define ERROR__H 1
 
+#define MAX_ERROR_STR 150
+
 typedef enum {
 	ST_OK,
 	ST_ERROR_PUNTERO_NULO,

@@ -23,3 +23,24 @@ void cortar_delimitador (char * s, char delimitador) {
 	if (busqueda)
 		*busqueda = '\0';
 }
+
+status_t imprimir_ayuda (FILE * f_out) {
+	FILE * fhelp;
+	char * buffer;
+	if (!(fhelp = fopen (ARCHIVO_AYUDA, "rt"))) 
+		return ST_ERROR_LECTURA_ARCHIVO;
+	
+	if (!(buffer = (char *) malloc (sizeof (char) * MAX_CADENA))) {
+		fclose (fhelp);
+		return ST_ERROR_MEMORIA_INVALIDA;
+	}
+	while (fgets (buffer, MAX_CADENA + 2, fhelp))
+		fprintf (f_out, "%s", buffer);
+	free (buffer);
+	if (ferror (fhelp)) {
+		fclose (fhelp);
+		return ST_ERROR_LECTURA_ARCHIVO;
+	}
+	fclose (fhelp);
+	return ST_OK;
+}
