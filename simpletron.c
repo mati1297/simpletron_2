@@ -119,7 +119,7 @@ status_simpletron simpletron_escribir (simpletron_t * simpletron) {
 	const palabra_t * dato;
 	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))));
 		return ST_SMP_ERROR_EJECUCION;
-	printf("+07%d\n", palabra_unir(*dato));
+	printf("%s %d:+07%d\n", MSJ_POSICION, palabra_leer_operando(simpletron->registro), palabra_unir(*dato));
 	simpletron->contador++;
 	return ST_SMP_OK;
 }

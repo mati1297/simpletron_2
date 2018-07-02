@@ -16,7 +16,7 @@ status_t imprimir_dump(lista_t  lista, fmt_t formato){
 	status_t st;
 		if(formato == 0){/*si el formato de salida es txt*/
 			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "wt")))
-				return ST_ERROR_ARCHIVO;
+				return ST_ERROR_LECTURA_ARCHIVO;
 			while(!(lista->siguiente)){
 				if((st = imprimir_registros (lista->dato, f_out)) != ST_OK) {
 					fclose (f_out);
@@ -31,7 +31,7 @@ status_t imprimir_dump(lista_t  lista, fmt_t formato){
 			}
 		else{ /*si el formato de salida es binario*/
 			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_BIN, "wb")))
-				return ST_ERROR_ARCHIVO;
+				return ST_ERROR_LECTURA_ARCHIVO;
 			while(!(lista -> siguiente)){
 				if((st = imprimir_bin(lista->dato, f_out, lista->dato->cantidad_de_memoria)) != ST_OK) {
 					fclose (f_out);
@@ -116,7 +116,7 @@ status_t imprimir_bin(const simpletron_t *simpletron, FILE *f_output, size_t can
 		return ST_ERROR_PUNTERO_NULO;
 	for (i = 0; i < cant_memoria; i++){
 		if((fwrite(&(simpletron->vector[i]),sizeof(palabra_t), 1, f_output)) != 1){
-			return ST_ERROR_ARCHIVO;
+			return ST_ERROR_LECTURA_ARCHIVO;
 	}
 	return ST_OK;
 }
