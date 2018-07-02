@@ -55,7 +55,7 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 					if(*endp)
 						return ST_ERROR_ARGUMENTO_INVALIDO;
 					if (aux < 1)
-						return ST_ERROR_CANTIDAD_DE_MEMORIA_INVALIDA;
+						return ST_ERROR_MEMORIA_INVALIDA;
 					parametros->cant_memoria = aux;
 					break;
 				case ARG_FMT_SALIDA:

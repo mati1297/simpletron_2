@@ -10,16 +10,14 @@ void imprimir_error (status_t st) {
 		MSJ_NO_ERROR,
 		MSJ_ERROR_PUNTERO_NULO,
 		MSJ_ERROR_CANTIDAD_DE_ARGS,
-		MSJ_ERROR_MEMORIA_INSUFICIENTE,
+		MSJ_ERROR_MEMORIA_INVALIDA,
 		MSJ_ERROR_ENTRADA_INVALIDA,
-		MSJ_ERROR_FILE_INPUT_DEMASIADO_LARGO,
-		MSJ_ERROR_FILE_OUTPUT_DEMASIADO_LARGO,
 		MSJ_ERROR_ARGUMENTO_INVALIDO,
 		MSJ_ERROR_INSTRUCCION_INVALIDA,
 		MSJ_ERROR_LECTURA_ARCHIVO,
-		MSJ_ERROR_CANTIDAD_DE_MEMORIA_INVALIDA,
-		MSJ_ERROR_MEMORIA_INSUFICIENTE_ARCHIVO,
-		MSJ_ERROR_SIMPLETRON
+		MSJ_ERROR_CANTIDAD_PALABRAS_INVALIDA,
+		MSJ_ERROR_CANTIDAD_ARCHIVOS,
+		MSJ_ERROR_MEMORIA_INSUFICIENTE
 	};
 	
 	if(st != ST_OK)
@@ -27,7 +25,6 @@ void imprimir_error (status_t st) {
 } 
 
 void imprimir_error_simpletron (status_simpletron st) {
-	
 	static char * error [MAX_ERROR_STR] = {
 		MSJ_NO_ERROR,
 		MSJ_ERROR_PUNTERO_NULO,
@@ -35,19 +32,19 @@ void imprimir_error_simpletron (status_simpletron st) {
 	};
 	
 	if(st != ST_SMP_OK)
-		fprintf (stderr, "%s: %s\n", MSJ_PREFIJO_ERROR, error [st]);
+		fprintf (stderr, "%s: %s\n", MSJ_PREFIJO_ERROR_SIMPLETRON, error [st]);
 }
 
 void imprimir_error_lista (retval_t st) {
 	static char * error [MAX_ERROR_STR] = {
-		MSJ_NO_ERROR
+		MSJ_NO_ERROR,
+		MSJ_ERROR_PUNTERO_NULO,
+		MSJ_ERROR_MEMORIA_INSUFICIENTE,
+		MSJ_ERROR,
+		MSJ_ERROR_NO_IMPLEMENTADO,
+		MSJ_ERROR_ARGUMENTO_INVALIDO
 	};
-/*		
-		  RV_SUCCESS = 0,
-		  RV_ILLEGAL = 1,
-		  RV_NOSPACE = 2,
-		  RV_ERROR = 3,
-		  RV_NOTIMPLEMENTED = 4,
-		  RV_MISSING_ARGS = 5
-*/
+
+	if(st != RV_SUCCESS)
+		fprintf (stderr, "%s: %s\n", MSJ_PREFIJO_ERROR_LISTA, error [st]);
 }
