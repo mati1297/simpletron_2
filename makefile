@@ -18,7 +18,7 @@ ansi:
 all: simpletron clean
 
 simpletron: main.o procesar_arg.o lectura.o simpletron.o dump.o error.o vector.o herramientas.o tda_lista_ite.o
-	$(CC) $(CFLAGS) simpletron main.o procesar_arg.o tda_lista_ite.o lectura.o simpletron.o dump.o error.o vector.o herramientas.o
+	$(CC) $(CFLAGS) -o simpletron main.o procesar_arg.o tda_lista_ite.o lectura.o simpletron.o dump.o error.o vector.o herramientas.o
 main.o: main.c error.h tda_lista.h lectura.h simpletron.h dump.h
 	$(CC) $(CFLAGS) -o main.o -c main.c
 procesar_arg.o: procesar_arg.c procesar_arg.h error.h
@@ -37,7 +37,5 @@ herramientas.o: herramientas.c herramientas.h idioma.h error.h simpletron.h
 	$(CC) $(CFLAGS) -o herramientas.o -c herramientas.c
 tda_lista_ite.o: tda_lista_ite.c tda_lista.h
 	$(CC) $(CFLAGS) -o tda_lista_ite.o -c tda_lista_ite.c
-tda_lista_rec.o: tda_lista_rec.c tda_lista.h
-	$(CC) $(CFLAGS) -o tda_lista_rec.o -c tda_lista_rec.c
 	
 clean: rm *.o
