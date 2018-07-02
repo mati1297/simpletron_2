@@ -38,4 +38,5 @@ herramientas.o: herramientas.c herramientas.h idioma.h error.h simpletron.h
 tda_lista_ite.o: tda_lista_ite.c tda_lista.h
 	$(CC) $(CFLAGS) -o tda_lista_ite.o -c tda_lista_ite.c
 	
-clean: rm *.o
+clean:
+	rm *.o
