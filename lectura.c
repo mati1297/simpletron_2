@@ -36,10 +36,9 @@ status_t crear_cargar_lista_simpletron (lista_t lista, params_t * parametros) {
 status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t memoria_pedida) {
 	FILE * file;
 	char buffer [MAX_LARGO], *endp;
-	int aux;
+	long aux;
 	size_t i;
 	palabra_t dato;
-	status_vector st_vec;
 	
 	if (!archivo)
 		return ST_ERROR_PUNTERO_NULO;
@@ -57,19 +56,18 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 			if (!recortar_espacios (buffer))
 				continue;
 			cortar_delimitador (buffer, DELIMITADOR_COMENTARIO);
-			aux = (int) strtol (buffer, &endp, 10);
+			aux = strtol (buffer, &endp, 10);
 			
 			if (*endp) {
 				fclose (file);
 				return ST_ERROR_INSTRUCCION_INVALIDA;
 			}
 			
-			/*LO HAGO PARTIENDOLO*/
-			/*falta validar, no se QUE hay que validar*/
-			dato = palabra_dividir (aux);
-			if ((st_vec = vector_guardar (vector, i, &dato, &palabra_copiar, &palabra_destruir)) != ST_VEC_OK) {
+			if(palabra_validar_generar(aux, &dato) != ST_SMP_OK)
+				return ST_ERROR_PALABRA_INVALIDA;
+			if (vector_guardar (vector, i, &dato, &palabra_copiar, &palabra_destruir)) {
 				fclose (file);
-				return st_vec;
+				return ST_ERROR_VECTOR;
 			} 
 			
 		}

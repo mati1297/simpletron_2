@@ -11,7 +11,7 @@
 #define TXT_ARG_MEMORIA "-m"
 #define TXT_ARG_FMT_SALIDA "-f"
 #define TXT_ARG_AYUDA "-h"
-#define TXT_ARG_AYUDA_EXTENDIDO "--helped"
+#define TXT_ARG_AYUDA_EXTENDIDO "--help"
 #define TXT_ARG_FMT_SALIDA_EXTENDIDO "--format"
 #define TXT_ARG_MEMORIA_EXTENDIDO "--memory"
 #define TXT_INDICADOR_BINARIO "bin"

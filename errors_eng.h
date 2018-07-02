@@ -19,5 +19,7 @@
 #define MSJ_ERROR "error"
 #define MSJ_ERROR_NO_IMPLEMENTADO "error not implemented"
 #define MSJ_ERROR_LISTA "error in list"
+#define MSJ_ERROR_PALABRA "wrong word"
+#define MSJ_ERROR_VECTOR "error in array"
 
 #endif

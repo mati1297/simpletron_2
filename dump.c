@@ -71,7 +71,7 @@ status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
 		return ST_ERROR_PUNTERO_NULO;
 	fprintf(f_output, "\n%s:\n", MSJ_REGISTROS);
 	fprintf(f_output, "%16s", MSJ_ACUMULADOR);
-	fprintf(f_output, "%9d\n", simpletron->acc);
+	fprintf(f_output, "%9ld\n", simpletron->acc);
 	fprintf(f_output, "%16s", MSJ_CONTADOR);
 	fprintf(f_output, "%9lu\n", simpletron->contador);
 	fprintf(f_output, "%16s", MSJ_INSTRUCCION);

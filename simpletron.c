@@ -46,7 +46,7 @@ void cargar_vector_funciones (funcion_t * vector) {
  * distintos nodos de la lista, y a su vez entre las ordenes de cada programa.
  * Esto ultimo lo hace buscando la funcion que le corresponde al opcode con la funcion
  * buscar_vector_funciones que devuelve un puntero a funcion*/
-status_simpletron ejecutar_lista_simpletron (lista_t lista) {
+status_simpletron simpletron_ejecutar_lista (lista_t lista) {
 	funcion_t funciones[CANTIDAD_DE_FUNCIONES];
 	if(!lista)
 		return ST_SMP_ERROR_PUNTERO_NULO;
@@ -56,7 +56,7 @@ status_simpletron ejecutar_lista_simpletron (lista_t lista) {
 	return ST_SMP_OK;
 }
 
-status_simpletron ejecutar_simpletron_individual (simpletron_t * simpletron, funcion_t * funciones) {
+status_simpletron simpletron_ejecutar_individual (simpletron_t * simpletron, funcion_t * funciones) {
 	const palabra_t * aux;
 	opcode_t opcode;
 	funcion_simpletron funcion;
@@ -101,10 +101,12 @@ status_simpletron simpletron_cargar (simpletron_t * simpletron) {
  * del registro, devuelve el estado por el nombre*/
 status_simpletron simpletron_leer (simpletron_t * simpletron) {
 	char buffer [MAX_LARGO], * endp;
+	status_simpletron st;
 	palabra_t dato;
 	if(!fgets(buffer, MAX_LARGO, stdin))
 		return ST_SMP_ERROR_EJECUCION;
-	dato = palabra_dividir((int) strtol(buffer, &endp, 10));
+	if((st = palabra_validar_generar(strtol(buffer, &endp, 10), &dato)) != ST_SMP_OK)
+		return st;
 	if(*endp)
 		return ST_SMP_ERROR_EJECUCION;
 	if(vector_guardar(simpletron->vector, palabra_leer_operando(simpletron->registro), &dato, &palabra_copiar, &palabra_destruir) != ST_VEC_OK)
@@ -119,7 +121,7 @@ status_simpletron simpletron_escribir (simpletron_t * simpletron) {
 	const palabra_t * dato;
 	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))));
 		return ST_SMP_ERROR_EJECUCION;
-	printf("%s %lu:+07%d\n", MSJ_POSICION, palabra_leer_operando(simpletron->registro), palabra_unir(*dato));
+	printf("%s %lu:+07%ld\n", MSJ_POSICION, palabra_leer_operando(simpletron->registro), palabra_unir(*dato));
 	simpletron->contador++;
 	return ST_SMP_OK;
 }
@@ -128,7 +130,9 @@ status_simpletron simpletron_escribir (simpletron_t * simpletron) {
  * Devuelve el estado por el nombre*/
 status_simpletron simpletron_guardar (simpletron_t * simpletron) {
 	palabra_t dato;
-	dato = palabra_dividir(simpletron->acc);
+	status_simpletron st;
+	if((st = palabra_validar_generar(simpletron->acc, &dato)) != ST_SMP_OK)
+		return st;
 	if(vector_guardar(simpletron->vector, palabra_leer_operando(simpletron->registro), &dato, &palabra_copiar, &palabra_destruir) != ST_VEC_OK)
 		return ST_SMP_ERROR_EJECUCION;
 	simpletron->contador++;
@@ -154,10 +158,12 @@ status_simpletron simpletron_pcargar (simpletron_t * simpletron) {
  * estado por el nombre*/
 status_simpletron simpletron_pguardar (simpletron_t * simpletron) {
 	const palabra_t * direccion;
+	status_simpletron st;
 	palabra_t dato;
 	if(!(direccion = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))))
 		return ST_SMP_ERROR_EJECUCION;
-	dato = palabra_dividir(simpletron->acc);
+	if((st = palabra_validar_generar(simpletron->acc, &dato)) != ST_SMP_OK)
+		return st;
 	if(vector_guardar(simpletron->vector, palabra_leer_operando(*direccion), &dato, &palabra_copiar, &palabra_destruir) != ST_VEC_OK)
 		return ST_SMP_ERROR_EJECUCION;
 	simpletron->contador++;
@@ -259,38 +265,20 @@ status_simpletron simpletron_djnz (simpletron_t * simpletron) {
 	return ST_SMP_OK;
 }
 
-/*NO LAS COMENTO AUN PORQUE NO SE SI VAN A QUEDAR ASI POR EL TEMA DE COMO SE GUARDAN LOS NUMEROS, ETC*/
-/*esta funcion supone que los valores son correctos*/
-void palabra_guardar_opcode (palabra_t * palabra, int opcode) {
-	(*palabra) &= ~MASK_OPCODE;
-	opcode &= MASK_OPCODE;
-	(*palabra) |= opcode << SHIFT_OPCODE;
-}
 
-void palabra_guardar_operando (palabra_t * palabra, int operando) {
-	(*palabra) &= ~MASK_OPERANDO;
-	operando &= MASK_OPERANDO;
-	(*palabra) |= operando << SHIFT_OPERANDO;
-}
 
 opcode_t palabra_leer_opcode (palabra_t palabra) {
 	return (palabra & MASK_OPCODE) >> SHIFT_OPCODE;
+}
+
+signo_t palabra_leer_signo (palabra_t palabra) {
+	return (palabra & MASK_SIGNO) >> SHIFT_SIGNO;
 }
 
 size_t palabra_leer_operando (palabra_t palabra) {
 	return (palabra & MASK_OPERANDO) >> SHIFT_OPERANDO;
 }
 
-int palabra_unir (palabra_t palabra) {
-	return palabra_leer_opcode (palabra) * DIVISOR + palabra_leer_operando (palabra);
-}
-
-palabra_t palabra_dividir (int numero) {
-	palabra_t palabra;
-	palabra_guardar_opcode (&palabra, numero / DIVISOR);
-	palabra_guardar_operando (&palabra, numero % DIVISOR);
-	return palabra;
-}
 
 palabra_t * palabra_copiar (palabra_t * dato) {
 	palabra_t * palabra;
@@ -321,6 +309,39 @@ void simpletron_borrar (simpletron_t * simpletron) {
 			vector_destruir(&(simpletron->vector), &palabra_destruir);
 	}
 }
+
+status_simpletron palabra_validar_generar (long numero, palabra_t * palabra) {
+	opcode_t opcode;
+	size_t operando;
+	if(numero < MIN_NUMERO || numero > MAX_NUMERO)
+		return ST_SMP_ERROR_PALABRA;
+	if(numero < 0) {
+		if(numero < MIN_NUMERO_NEGATIVO_GUARDAR)
+			return ST_SMP_ERROR_PALABRA;
+		*palabra = (palabra_t) numero & MASK_NUMERO_NEGATIVO;
+		*palabra |= MASK_SIGNO;
+		return ST_SMP_OK;
+	}
+	if(numero >= 0) {
+		if((operando = numero % DIVISOR) > MAX_OPERANDO)
+			return ST_SMP_ERROR_PALABRA;
+		if((opcode = numero / DIVISOR) > MAX_OPCODE)
+			return ST_SMP_ERROR_PALABRA;
+		*palabra = (palabra_t) (operando & MASK_OPERANDO);
+		*palabra |= (opcode << SHIFT_OPCODE) & MASK_OPCODE;
+		*palabra |= SIGNO_POSITIVO << SHIFT_SIGNO;
+		return ST_SMP_OK;
+	}
+	return ST_SMP_ERROR_PALABRA;
+}
+
+long palabra_unir (palabra_t palabra) {
+	if (palabra_leer_signo(palabra) == SIGNO_POSITIVO)
+		return palabra_leer_opcode (palabra) * DIVISOR + palabra_leer_operando (palabra);
+	return palabra;
+}
+
+
 
 
 

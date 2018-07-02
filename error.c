@@ -19,6 +19,8 @@ void imprimir_error (status_t st) {
 		MSJ_ERROR_CANTIDAD_ARCHIVOS,
 		MSJ_ERROR_LISTA,
 		MSJ_ERROR_MEMORIA_INSUFICIENTE
+		MSJ_ERROR_VECTOR,
+		MSJ_ERROR_PALABRA
 	};
 	
 	if(st != ST_OK)
@@ -30,7 +32,8 @@ void imprimir_error_simpletron (status_simpletron st) {
 		MSJ_NO_ERROR,
 		MSJ_ERROR_PUNTERO_NULO,
 		MSJ_ERROR_SIMPLETRON,
-		MSJ_ERROR_LISTA
+		MSJ_ERROR_LISTA,
+		MSJ_ERROR_PALABRA
 	};
 	
 	if(st != ST_SMP_OK)

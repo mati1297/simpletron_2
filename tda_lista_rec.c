@@ -13,7 +13,7 @@
  * ---------------------------------------------------------------------------
  */
 #include <stdlib.h>
-#include "../lib/types.h"
+#include "types.h"
 #include "tda_lista.h"
 
 /* Recibe una lista. En caso de que esté vacía devuelve TRUE,

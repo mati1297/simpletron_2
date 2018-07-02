@@ -19,5 +19,7 @@
 #define MSJ_ERROR "error"
 #define MSJ_ERROR_NO_IMPLEMENTADO "error no implementado"
 #define MSJ_ERROR_LISTA "error en lista"
+#define MSJ_ERROR_PALABRA "palabra erronea"
+#define MSJ_ERROR_VECTOR "error al guardar en vector"
 
 #endif

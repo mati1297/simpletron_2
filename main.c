@@ -32,7 +32,7 @@ int main (int argc, const char * argv []) {
 		return EXIT_FAILURE;
 	}
 	
-	if ((st_smp = ejecutar_simpletron_lista (lista))) {
+	if ((st_smp =simpletron_ejecutar_lista (lista))) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		LISTA_destruir(&lista, &simpletron_borrar);
 		imprimir_error_simpletron (st_smp);
@@ -46,15 +46,12 @@ int main (int argc, const char * argv []) {
 		return EXIT_FAILURE;
 	}
 	
-	liberar_vector_archivos (parametros.vector_datos_archivos);
 	if ((st_lista = LISTA_destruir (&lista, &simpletron_borrar)) != RV_SUCCESS) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
-		LISTA_destruir(&lista, &simpletron_borrar);
 		imprimir_error_lista (st_lista);
 		return EXIT_FAILURE;
 	}
 	liberar_vector_archivos(parametros.vector_datos_archivos);
-	LISTA_destruir(&lista, &simpletron_borrar);
 	return EXIT_SUCCESS;
 }
 
