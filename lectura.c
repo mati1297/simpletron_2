@@ -3,7 +3,7 @@
 #include "lectura.h"
 #include "vector.h"
 #include "simpletron.h"
-#include "procesar_arg.c"
+#include "procesar_arg.h"
 #include "herramientas.h"
 #include "error.h"
 #include "tda_lista.h"
@@ -39,10 +39,8 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 	long aux;
 	size_t i;
 	palabra_t dato;
-	
 	if (!archivo)
 		return ST_ERROR_PUNTERO_NULO;
-		
 	if (archivo->fmt_entrada == FMT_TXT) {
 		if (!strcmp(archivo->nombre_archivo, INDICADOR_STDIN))
 			file = stdin;
@@ -64,7 +62,7 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 			}
 			
 			if(palabra_validar_generar(aux, &dato) != ST_SMP_OK)
-				return ST_ERROR_PALABRA_INVALIDA;
+				return ST_ERROR_PALABRA;
 			if (vector_guardar (vector, i, &dato, &palabra_copiar, &palabra_destruir)) {
 				fclose (file);
 				return ST_ERROR_VECTOR;

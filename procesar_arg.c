@@ -81,7 +81,7 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 				return ST_ERROR_CANTIDAD_ARCHIVOS;
 			if(!(parametros-> vector_datos_archivos = (archivo_t *) calloc (parametros->cant_archivos, sizeof(archivo_t))))
 				return ST_ERROR_MEMORIA_INSUFICIENTE;
-		
+				
 		/*Comienza la lectura de los nombres de archivos*/
 		for(; i < argc; i++) {
 			

@@ -26,11 +26,13 @@ int main (int argc, const char * argv []) {
 		return EXIT_SUCCESS;
 	}
 	
+	
 	if ((st = crear_cargar_lista_simpletron (lista, &parametros)) != ST_OK) {
 		imprimir_error (st);
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		return EXIT_FAILURE;
 	}
+	
 	
 	if ((st_smp =simpletron_ejecutar_lista (lista))) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
@@ -38,6 +40,8 @@ int main (int argc, const char * argv []) {
 		imprimir_error_simpletron (st_smp);
 		return EXIT_FAILURE;
 	}
+	
+	
 	
 	if ((st = imprimir_dump (lista, parametros.fmt_salida)) != ST_OK) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
