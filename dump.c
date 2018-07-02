@@ -6,16 +6,16 @@
 #include "vector.h"
 #include "dump.h"
 
-/*recibe un puntero al comienzo de una lista y el formato en el que se desea imprimir el dump
+/* Recibe un puntero al comienzo de una lista y el formato en el que se desea imprimir el dump
  * En el caso que se quiera formato texto, se imprime con el formato indicado en la consigna del TP.
  * Si se quiere binario, se imprimen los datos necesarios uno atras de otro sin espacios ni comentarios.
  * Abre los archivos con el formato indicado utilizando un nombre standard.
  * Por el nombre devuelve un estado que indica si fallo o no la funcion*/
-status_t imprimir_dump(lista_t  lista, fmt_t formato){
+status_t imprimir_dump(lista_t lista, fmt_t formato){
 	FILE *f_out;
 	status_t st;
 		if(formato == 0){/*si el formato de salida es txt*/
-			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "wt")))
+			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "at")))
 				return ST_ERROR_LECTURA_ARCHIVO;
 			while(!(lista->siguiente)){
 				if((st = imprimir_registros (lista->dato, f_out)) != ST_OK) {
@@ -30,7 +30,7 @@ status_t imprimir_dump(lista_t  lista, fmt_t formato){
 				lista->siguiente = lista->siguiente->siguiente;
 			}
 		else{ /*si el formato de salida es binario*/
-			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_BIN, "wb")))
+			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_BIN, "ab")))
 				return ST_ERROR_LECTURA_ARCHIVO;
 			while(!(lista -> siguiente)){
 				if((st = imprimir_bin(lista->dato, f_out, lista->dato->cantidad_de_memoria)) != ST_OK) {
