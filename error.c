@@ -29,7 +29,8 @@ void imprimir_error_simpletron (status_simpletron st) {
 	static char * error [MAX_ERROR_STR] = {
 		MSJ_NO_ERROR,
 		MSJ_ERROR_PUNTERO_NULO,
-		MSJ_ERROR_SIMPLETRON
+		MSJ_ERROR_SIMPLETRON,
+		MSJ_ERROR_LISTA
 	};
 	
 	if(st != ST_SMP_OK)

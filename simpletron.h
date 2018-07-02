@@ -29,7 +29,8 @@ typedef struct simpletron {
 typedef enum {
 	ST_SMP_OK,
 	ST_SMP_ERROR_PUNTERO_NULO,
-	ST_SMP_ERROR_EJECUCION
+	ST_SMP_ERROR_EJECUCION,
+	ST_SMP_ERROR_LISTA
 } status_simpletron;
 
 typedef enum {

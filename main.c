@@ -32,7 +32,7 @@ int main (int argc, const char * argv []) {
 		return EXIT_FAILURE;
 	}
 	
-	if ((st_smp = ejecutar_simpletron (lista))) {
+	if ((st_smp = ejecutar_simpletron_lista (lista))) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		LISTA_destruir(&lista, &simpletron_borrar);
 		imprimir_error_simpletron (st_smp);

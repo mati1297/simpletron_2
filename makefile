@@ -27,11 +27,11 @@ lectura.o: lectura.c lectura.h vector.h simpletron.h procesar_arg.h herramientas
 	$(CC) $(CFLAGS) -o lectura.o -c lectura.c
 simpletron.o: simpletron.c simpletron.h vector.h tda_lista.h
 	$(CC) $(CFLAGS) -o simpletron.o -c simpletron.c
-dump.o: dump.c dump.h simpletron.h vector.h tda_lista.h
+dump.o: dump.c dump.h simpletron.h vector.h tda_lista.h idioma.h
 	$(CC) $(CFLAGS) -o dump.o -c dump.c
 error.o: error.c error.h idioma.h
 	$(CC) $(CFLAGS) -o error.o -c error.c
-vector.o: vector.c vector.h simpletron.h error.h tda_lista.h
+vector.o: vector.c vector.h simpletron.h error.h tda_lista.h types.h
 	$(CC) $(CFLAGS) -o vector.o -c vector.c
 herramientas.o: herramientas.c herramientas.h idioma.h error.h simpletron.h
 	$(CC) $(CFLAGS) -o herramientas.o -c herramientas.c
