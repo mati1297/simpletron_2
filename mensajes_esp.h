@@ -13,5 +13,6 @@
 #define MSJ_OPERANDO "Operando"
 #define MSJ_MEMORIA "MEMORIA"
 #define ARCHIVO_AYUDA "ayuda.txt"
+#define MSJ_POSICION "Contenido de la posicion"
 
 #endif

@@ -10,13 +10,13 @@
 
 #define NOMBRE_ARCHIVO_STANDARD_TXT "output.txt"
 #define NOMBRE_ARCHIVO_STANDARD_BIN "output.bin"
-#define MSJ_REGISTROS "REGISTROS:"
+/*#define MSJ_REGISTROS "REGISTROS:"
 #define MSJ_ACC "acumulador:"
 #define MSJ_CONTADOR "program counter:"
 #define MSJ_INSTRUCCION "instruccion:"
 #define MSJ_OPCODE "opcode:"
 #define MSJ_OPERANDO "operando:"
-#define MSJ_MEMORIA "MEMORIA:"
+#define MSJ_MEMORIA "MEMORIA:"*/
 #define MASK_CHAR 0xff00
 #define SHIF_CHAR 8
 #define CARAC_IMPRIMIBLE '.'

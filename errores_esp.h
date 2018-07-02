@@ -18,5 +18,6 @@
 #define MSJ_ERROR_SIMPLETRON "en ejecución de Simpletron"
 #define MSJ_ERROR "error"
 #define MSJ_ERROR_NO_IMPLEMENTADO "error no implementado"
+#define MSJ_ERROR_LISTA "error en lista"
 
 #endif
