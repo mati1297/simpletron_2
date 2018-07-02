@@ -1,0 +1,3 @@
+includes agregados
+en vector.c y .h : types.h
+en dump.h : idioma.h

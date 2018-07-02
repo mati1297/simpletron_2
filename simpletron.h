@@ -96,6 +96,7 @@ void cargar_vector_funciones (funcion_t * vector);
 funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode);
 void simpletron_borrar (simpletron_t * simpletron);
 simpletron_t * simpletron_crear (size_t memoria_vector);
-status_simpletron ejecutar_simpletron (lista_t lista);
+status_simpletron ejecutar_simpletron_lista (lista_t lista);
+status_simpletron ejecutar_simpletron_individual (simpletron_t * simpletron, funcion_t * funciones);
 
 #endif

@@ -3,6 +3,7 @@
 #include "vector.h"
 #include "simpletron.h"
 #include "error.h"
+#include "types.h"
 
 /* CUANDO SE HAGAN LAS FUNCIONES LAS CUALES ACA SE USA SU PUNTERO, HAY QUE MODIFICAR QUE PARAMETROS TIENEN (TIPOS,ETC)*/
 
@@ -70,6 +71,12 @@ status_vector vector_iterar (vector_t * v, size_t inicio, size_t fin, void (*fun
 
 size_t vector_memoria (vector_t * v) {
 	return v->pedido;
+}
+
+bool_t vector_esta_vacio (vector_t * v) {
+	if (v->datos == NULL)
+		return true;
+	return false;
 }
 
 

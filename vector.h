@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "simpletron.h"
 #include "error.h"
+#include "types.h"
 
 typedef struct vector {
 	size_t pedido;
@@ -26,5 +27,6 @@ status_vector vector_guardar (vector_t * v, size_t i, palabra_t * dato, palabra_
 const palabra_t * vector_leer (const vector_t * v, size_t i);
 status_vector vector_iterar (vector_t * v, size_t inicio, size_t fin, void (*funcion) (void *, void *), void * arg);
 size_t vector_memoria (vector_t * v);
+bool_t vector_esta_vacio (vector_t * v);
 
 #endif
