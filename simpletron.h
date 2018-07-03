@@ -20,7 +20,8 @@
 #define MIN_NUMERO -9999999
 #define MIN_NUMERO_NEGATIVO_GUARDAR -32767
 #define MASK_NUMERO_NEGATIVO 0x7FFF
-#define PALABRA_VACIA "\n"
+#define INGRESO_VACIO "\n"
+#define PALABRA_VACIA 0
 
 
 typedef short int palabra_t;
@@ -111,7 +112,7 @@ status_simpletron simpletron_jnz (simpletron_t * simpletron);
 status_simpletron simpletron_djnz (simpletron_t * simpletron);
 void cargar_vector_funciones (funcion_t * vector);
 funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode);
-void simpletron_borrar (simpletron_t * simpletron);
+status_simpletron simpletron_borrar (simpletron_t * simpletron);
 simpletron_t * simpletron_crear (size_t memoria_vector);
 status_simpletron simpletron_ejecutar_lista (lista_t * lista);
 retval_t simpletron_ejecutar_individual (void * simpletron, void * funciones);

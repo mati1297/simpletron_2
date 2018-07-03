@@ -88,6 +88,13 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 		fclose (file);
 		return ST_ERROR_LECTURA_ARCHIVO;
 	}
+	
+	dato = PALABRA_VACIA;
+	for(; i < memoria_pedida; i++)
+	{
+		vector_guardar(vector, i, &dato, &palabra_copiar, &palabra_destruir);
+	}
+	
 	fclose (file);
 	return ST_OK;
 }

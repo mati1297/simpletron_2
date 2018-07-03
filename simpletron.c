@@ -112,7 +112,7 @@ status_simpletron simpletron_leer (simpletron_t * simpletron) {
 	puts(MSJ_INGRESO_PALABRA);
 	if(!fgets(buffer, MAX_LARGO, stdin))
 		return ST_SMP_ERROR_EJECUCION;
-	if(!strcmp(buffer, PALABRA_VACIA))
+	if(!strcmp(buffer, INGRESO_VACIO))
 		return ST_SMP_ERROR_EJECUCION;
 	if((st = palabra_validar_generar(strtol(buffer, &endp, 10), &dato)) != ST_SMP_OK)
 		return st;
@@ -328,11 +328,13 @@ simpletron_t * simpletron_crear (size_t memoria_vector) {
 	return simpletron;
 }
 /*ACA OJO QUE JODE LO DE RETVAL XD*/
-void simpletron_borrar (simpletron_t * simpletron) {
+status_simpletron simpletron_borrar (simpletron_t * simpletron) {
 	if(simpletron) {
 		if(simpletron->vector)
 			vector_destruir(&(simpletron->vector), &palabra_destruir);
+		free(simpletron);
 	}
+	return ST_SMP_OK;
 }
 
 status_simpletron palabra_validar_generar (long numero, palabra_t * palabra) {

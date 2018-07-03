@@ -14,7 +14,7 @@
 status_t imprimir_dump(lista_t lista, fmt_t formato){
 	FILE *f_out;
 		if(formato == FMT_TXT) {/*si el formato de salida es txt*/
-			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "at")))
+			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "wt")))
 				return ST_ERROR_LECTURA_ARCHIVO;
 			if(LISTA_recorrer(lista, &imprimir, f_out) != RV_SUCCESS) {
 				fclose(f_out);
@@ -35,7 +35,7 @@ status_t imprimir_dump(lista_t lista, fmt_t formato){
 				lista->siguiente = lista->siguiente->siguiente;
 			}*/
 		else { /*si el formato de salida es binario*/
-			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_BIN, "ab")))
+			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_BIN, "wb")))
 				return ST_ERROR_LECTURA_ARCHIVO;
 			if(LISTA_recorrer(lista, &imprimir_bin, f_out) != RV_SUCCESS) {
 				fclose(f_out);
@@ -58,8 +58,8 @@ status_t imprimir (const simpletron_t * simpletron, FILE * f_output) {
 	status_t st;
 	if((st = imprimir_registros(simpletron, f_output)) != ST_OK)
 		return st;
-	/*if((st = imprimir_memoria(simpletron, f_output)) != ST_OK)
-		return st;*/
+	if((st = imprimir_memoria(simpletron, f_output)) != ST_OK)
+		return st;
 	return ST_OK;
 }
 
@@ -69,9 +69,9 @@ status_t imprimir (const simpletron_t * simpletron, FILE * f_output) {
 status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
 	if (simpletron == NULL || f_output == NULL)
 		return ST_ERROR_PUNTERO_NULO;
-	fprintf(f_output, "\n%s:\n", MSJ_REGISTROS);
+	fprintf(f_output, "%s:\n\n", MSJ_REGISTROS);
 	fprintf(f_output, "%16s", MSJ_ACUMULADOR);
-	fprintf(f_output, "%9ld\n", simpletron->acc);
+	fprintf(f_output, "%9X\n", simpletron->acc);
 	fprintf(f_output, "%16s", MSJ_CONTADOR);
 	fprintf(f_output, "%9lu\n", simpletron->contador);
 	fprintf(f_output, "%16s", MSJ_INSTRUCCION);
@@ -80,6 +80,7 @@ status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
 	fprintf(f_output, "%16d\n", palabra_leer_opcode(simpletron->registro));
 	fprintf(f_output, "%16s", MSJ_OPERANDO);
 	fprintf(f_output, "%16lu\n", palabra_leer_operando(simpletron->registro));
+	fputc('\n', f_output);
 	return ST_OK;
 }
 
@@ -90,7 +91,7 @@ status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
  * Entoces por cada palabra, se imprimen dos caracteres ascii.
  * Si se tiene un caracter no imprimible, se imprime un punto.
  * Devuelve el estado por el nombre*/
-status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
+/*status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 	size_t i;
 	int i_binario;
 	if (f_output == NULL)
@@ -99,35 +100,59 @@ status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 	if(vector_esta_vacio(simpletron->vector))
 		return ST_OK;
 	for(i = 0; i < simpletron->cantidad_de_memoria; i++){
-		if(!(i % CANT_COLS)){
+		/*if(!(i % CANT_COLS)){
 			fputc('\n',f_output);
 			i_binario = (int) i;
 			printf("%lu", i);
 			fprintf(f_output, "%04x0:  ", i_binario);
 			
-			/*imprimir_ascii(simpletron->vector, i, f_output);*/
+			imprimir_ascii(simpletron->vector, i, f_output);
 		}
 		
 		fprintf(f_output, "%hu  ", *(vector_leer(simpletron->vector, i)));
 	}
+	return ST_OK;
+}*/
+
+status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
+	size_t i;
+	const palabra_t * aux;
+	palabra_t hola;
+	if(f_output == NULL)
+		return ST_ERROR_PUNTERO_NULO;
+	if(vector_esta_vacio(simpletron->vector))
+		return ST_OK;
+	fprintf(f_output,"%S\n", MSJ_MEMORIA); 
+	fputc('\n', f_output);
+	for(i = 0; i < simpletron->cantidad_de_memoria; i++) {
+		if(!(i % CANT_COLS)) {
+			imprimir_ascii(simpletron->vector, i, f_output);
+			fputc('\n', f_output);
+			fprintf(f_output, "%03X:  ", i);
+		}
+		aux = vector_leer(simpletron->vector, i);
+		hola = *aux;
+		fprintf(f_output, "%04X  ", hola);
+	}
+	fputc('\n', f_output);
+	fputc('\n', f_output);
 	return ST_OK;
 }
 
 /*Recibe un puntero a la estructura vector_t y un entero para iterar.
  * Imprime la representacion ascii de la memoria en el mismo renglon.
  * En el caso de que se tenga un caracter no imprimible, se lo reemplaza por un punto*/
-void imprimir_ascii(const vector_t * vector_memoria, int i, FILE * f_output){
+void imprimir_ascii(const vector_t * vector_memoria, int i, FILE * f_output) {
 	palabra_t aux;
+	size_t j;
 	char c;
-	int j;
-	for(j = i - CANT_COLS; j <= i; j++){
-		aux = *(vector_leer(vector_memoria, j)) & MASK_CHAR;
-		c = (char) (aux >> SHIFT_CHAR);
-		iscntrl(c)? fputc(CARAC_IMPRIMIBLE, f_output): fprintf(f_output, "%c", aux);
-		aux = *(vector_leer(vector_memoria, j)) & ~MASK_CHAR;
-		c = (char) aux;
-		iscntrl(c)? fputc(CARAC_IMPRIMIBLE, f_output): fprintf(f_output, "%c", aux);
-	}
+	for(j = i - CANT_COLS; j < i; j++) {
+		aux = *(vector_leer(vector_memoria, j));
+		c = (aux & MASK_CHAR) >> SHIFT_CHAR;
+		fputc((isprint(c))?c:CARAC_NO_IMPRIMIBLE, f_output);
+		c = (aux & ~MASK_CHAR);
+		fputc((isprint(c))?c:CARAC_NO_IMPRIMIBLE, f_output);
+	} 
 }
 
 /*Recibe un puntero a una estructura simpletron de donde obtendra los datos a imprimir,

@@ -21,8 +21,8 @@
 #define MSJ_MEMORIA "MEMORIA:"*/
 #define MASK_CHAR 0xff00
 #define SHIFT_CHAR 8
-#define CARAC_IMPRIMIBLE '.'
-#define CANT_COLS 7
+#define CARAC_NO_IMPRIMIBLE '.'
+#define CANT_COLS 8
 
 status_t imprimir_dump(lista_t lista, fmt_t formato);
 status_t imprimir (const simpletron_t * simpletron, FILE * f_output);
