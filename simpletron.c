@@ -52,7 +52,7 @@ status_simpletron simpletron_ejecutar_lista (lista_t * lista) {
 		return ST_SMP_ERROR_PUNTERO_NULO;
 	cargar_vector_funciones(funciones);
 	if(LISTA_recorrer(*lista, &simpletron_ejecutar_individual, funciones) != RV_SUCCESS)
-		return ST_SMP_ERROR_LISTA;
+		return ST_SMP_ERROR_EJECUCION;
 	return ST_SMP_OK;
 }
 
