@@ -22,19 +22,8 @@ status_t imprimir_dump(lista_t lista, fmt_t formato){
 			}
 			
 		}
-			/*while(!(lista->siguiente)){
-				if((st = imprimir_registros (lista->dato, f_out)) != ST_OK) {
-					fclose (f_out);
-					return st;
-				}
-				if((st = imprimir_memoria (lista->dato->vector, lista->dato->cantidad_de_memoria, f_out)) != ST_OK) {
-					fclose (f_out);
-					return st;
-				}
-				
-				lista->siguiente = lista->siguiente->siguiente;
-			}*/
-		else { /*si el formato de salida es binario*/
+		
+		else {
 			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_BIN, "wb")))
 				return ST_ERROR_LECTURA_ARCHIVO;
 			if(LISTA_recorrer(lista, &imprimir_bin, f_out) != RV_SUCCESS) {
@@ -91,29 +80,6 @@ status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
  * Entoces por cada palabra, se imprimen dos caracteres ascii.
  * Si se tiene un caracter no imprimible, se imprime un punto.
  * Devuelve el estado por el nombre*/
-/*status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
-	size_t i;
-	int i_binario;
-	if (f_output == NULL)
-		return ST_ERROR_PUNTERO_NULO;
-	fprintf(f_output,"%s", MSJ_MEMORIA);
-	if(vector_esta_vacio(simpletron->vector))
-		return ST_OK;
-	for(i = 0; i < simpletron->cantidad_de_memoria; i++){
-		/*if(!(i % CANT_COLS)){
-			fputc('\n',f_output);
-			i_binario = (int) i;
-			printf("%lu", i);
-			fprintf(f_output, "%04x0:  ", i_binario);
-			
-			imprimir_ascii(simpletron->vector, i, f_output);
-		}
-		
-		fprintf(f_output, "%hu  ", *(vector_leer(simpletron->vector, i)));
-	}
-	return ST_OK;
-}*/
-
 status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 	size_t i, j;
 	const palabra_t * aux;
@@ -121,7 +87,7 @@ status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 		return ST_ERROR_PUNTERO_NULO;
 	if(vector_esta_vacio(simpletron->vector))
 		return ST_OK;
-	fprintf(f_output,"%S\n", MSJ_MEMORIA); 
+	fprintf(f_output,"%s\n", MSJ_MEMORIA); 
 	fputc('\n', f_output);
 	for(i = 0; i < simpletron->cantidad_de_memoria; i++) {
 		if(!(i % CANT_COLS)) {

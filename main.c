@@ -28,6 +28,7 @@ int main (int argc, const char * argv []) {
 	
 	if ((st = crear_cargar_lista_simpletron (&lista, &parametros)) != ST_OK) {
 		imprimir_error (st);
+		LISTA_destruir(&lista, &simpletron_borrar);
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		return EXIT_FAILURE;
 	}

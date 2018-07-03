@@ -321,7 +321,8 @@ void palabra_destruir (palabra_t * palabra) {
 
 simpletron_t * simpletron_crear (size_t memoria_vector) {
 	simpletron_t * simpletron;
-	simpletron = (simpletron_t *) calloc (1,  sizeof(simpletron_t));
+	if(!(simpletron = (simpletron_t *) calloc (1,  sizeof(simpletron_t))))
+		return NULL;
 	if(!(simpletron->vector = vector_crear(memoria_vector)))
 		free(simpletron);
 	simpletron->cantidad_de_memoria = memoria_vector;

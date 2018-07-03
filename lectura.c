@@ -17,11 +17,11 @@ status_t crear_cargar_lista_simpletron (lista_t * lista, params_t * parametros) 
 	for (i = 0; i < parametros->cant_archivos; i++) {
 		simpletron = simpletron_crear (parametros->cant_memoria);
 		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, simpletron->cantidad_de_memoria)) != ST_OK) {
-			LISTA_destruir(lista, &simpletron_borrar);
+			simpletron_borrar(simpletron);
 			return st;
 		}
 		if(LISTA_insertar_al_final(lista, simpletron) != RV_SUCCESS) {
-			LISTA_destruir(lista, &simpletron_borrar);
+			simpletron_borrar(simpletron);
 			return ST_ERROR_LISTA;
 		}
 	}
@@ -51,7 +51,7 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 				continue;
 			cortar_delimitador (buffer, DELIMITADOR_COMENTARIO);
 			aux = strtol (buffer, &endp, 10);
-			if (*endp) {
+			if (*endp && *endp != '\n') {
 				fclose (file);
 				return ST_ERROR_INSTRUCCION_INVALIDA;
 			}
@@ -65,12 +65,11 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 			
 		}
 	}
-		/*Puede hacer falta hacer un fgets mas para llegar a eof*/
+		/*Ya se lee como palabra_t*/
 	else {
 		if (!(file = fopen(archivo->nombre_archivo, "rb")))
 		return ST_ERROR_LECTURA_ARCHIVO;
 		for (i = 0; fread (&dato, sizeof (palabra_t), 1, file) != 1; i++) {
-			/*falta validar, no se QUE hay que validar*/
 			if (i > memoria_pedida) {
 				fclose (file);
 				return ST_ERROR_CANTIDAD_PALABRAS_INVALIDA;
