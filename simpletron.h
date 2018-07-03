@@ -43,22 +43,22 @@ typedef enum {
 } status_simpletron;
 
 typedef enum {
-	LEER = 10,
-	ESCRIBIR = 11,
-	CARGAR = 20,
-	GUARDAR = 21,
-	PCARGAR = 22,
-	PGUARDAR = 23,
-	SUMAR = 30,
-	RESTAR = 21,
-	DIVIDIR = 32,
-	MULTIPLICAR = 33,
-	JMP = 40,
-	JMPNEG = 41,
-	JMPZERO = 42,
-	JNZ = 43,
-	DJNZ = 44,
-	HALT = 45
+	OP_LEER = 10,
+	OP_ESCRIBIR = 11,
+	OP_CARGAR = 20,
+	OP_GUARDAR = 21,
+	OP_PCARGAR = 22,
+	OP_PGUARDAR = 23,
+	OP_SUMAR = 30,
+	OP_RESTAR = 21,
+	OP_DIVIDIR = 32,
+	OP_MULTIPLICAR = 33,
+	OP_JMP = 40,
+	OP_JMPNEG = 41,
+	OP_JMPZERO = 42,
+	OP_JNZ = 43,
+	OP_DJNZ = 44,
+	OP_HALT = 45
 } opcode_t;
 
 
@@ -112,7 +112,7 @@ void cargar_vector_funciones (funcion_t * vector);
 funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode);
 void simpletron_borrar (simpletron_t * simpletron);
 simpletron_t * simpletron_crear (size_t memoria_vector);
-status_simpletron simpletron_ejecutar_lista (lista_t lista);
+status_simpletron simpletron_ejecutar_lista (lista_t * lista);
 status_simpletron simpletron_ejecutar_individual (simpletron_t * simpletron, funcion_t * funciones);
 
 #endif

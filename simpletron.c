@@ -9,35 +9,35 @@
  * las funciones y sus opcodes para que sean facilmente llamadas. No se incluye
  * el opcode HALT ya que no hay una funcion explicita definida para este opcode*/
 void cargar_vector_funciones (funcion_t * vector) {
-	vector[0].opcode = LEER;
+	vector[0].opcode = OP_LEER;
 	vector[0].funcion = &simpletron_leer;
-	vector[1].opcode = ESCRIBIR;
+	vector[1].opcode = OP_ESCRIBIR;
 	vector[1].funcion = &simpletron_escribir;
-	vector[2].opcode = CARGAR;
+	vector[2].opcode = OP_CARGAR;
 	vector[2].funcion = &simpletron_cargar;
-	vector[3].opcode = GUARDAR;
+	vector[3].opcode = OP_GUARDAR;
 	vector[3].funcion = &simpletron_guardar;
-	vector[4].opcode = PCARGAR;
+	vector[4].opcode = OP_PCARGAR;
 	vector[4].funcion = &simpletron_pcargar;
-	vector[5].opcode = PGUARDAR;
+	vector[5].opcode = OP_PGUARDAR;
 	vector[5].funcion = &simpletron_pguardar;
-	vector[6].opcode = SUMAR;
+	vector[6].opcode = OP_SUMAR;
 	vector[6].funcion = &simpletron_sumar;
-	vector[7].opcode = RESTAR;
+	vector[7].opcode = OP_RESTAR;
 	vector[7].funcion = &simpletron_restar;
-	vector[8].opcode = DIVIDIR;
+	vector[8].opcode = OP_DIVIDIR;
 	vector[8].funcion = &simpletron_dividir;
-	vector[9].opcode = MULTIPLICAR;
+	vector[9].opcode = OP_MULTIPLICAR;
 	vector[9].funcion = &simpletron_multiplicar;
-	vector[10].opcode = JMP;
+	vector[10].opcode = OP_JMP;
 	vector[10].funcion = &simpletron_jmp;
-	vector[11].opcode = JMPNEG;
+	vector[11].opcode = OP_JMPNEG;
 	vector[11].funcion = &simpletron_jmpneg;
-	vector[12].opcode = JMPZERO;
+	vector[12].opcode = OP_JMPZERO;
 	vector[12].funcion = &simpletron_jmpzero;
-	vector[13].opcode = JNZ;
+	vector[13].opcode = OP_JNZ;
 	vector[13].funcion = &simpletron_jnz;
-	vector[14].opcode = DJNZ;
+	vector[14].opcode = OP_DJNZ;
 	vector[14].funcion = &simpletron_djnz;
 }
 
@@ -46,13 +46,15 @@ void cargar_vector_funciones (funcion_t * vector) {
  * distintos nodos de la lista, y a su vez entre las ordenes de cada programa.
  * Esto ultimo lo hace buscando la funcion que le corresponde al opcode con la funcion
  * buscar_vector_funciones que devuelve un puntero a funcion*/
-status_simpletron simpletron_ejecutar_lista (lista_t lista) {
+status_simpletron simpletron_ejecutar_lista (lista_t * lista) {
 	funcion_t funciones[CANTIDAD_DE_FUNCIONES];
 	if(!lista)
 		return ST_SMP_ERROR_PUNTERO_NULO;
 	cargar_vector_funciones(funciones);
-	if(LISTA_recorrer(lista, &simpletron_ejecutar_individual, funciones) != RV_SUCCESS);
+	puts("hola");
+	if(LISTA_recorrer(*lista, &simpletron_ejecutar_individual, funciones) != RV_SUCCESS)
 		return ST_SMP_ERROR_LISTA;
+	puts("hola");
 	return ST_SMP_OK;
 }
 
@@ -64,7 +66,7 @@ status_simpletron simpletron_ejecutar_individual (simpletron_t * simpletron, fun
 			if(!(aux = vector_leer(simpletron->vector, simpletron->contador)))
 				return ST_SMP_ERROR_EJECUCION;
 			simpletron->registro = *aux;
-			if((opcode = palabra_leer_opcode(simpletron->registro) == HALT))
+			if((opcode = palabra_leer_opcode(simpletron->registro) == OP_HALT))
 				break;
 			if(!(funcion = buscar_vector_funciones(funciones, opcode)))
 				return ST_SMP_ERROR_EJECUCION;
@@ -300,6 +302,7 @@ simpletron_t * simpletron_crear (size_t memoria_vector) {
 	simpletron = (simpletron_t *) calloc (1,  sizeof(simpletron_t));
 	if(!(simpletron->vector = vector_crear(memoria_vector)))
 		free(simpletron);
+	simpletron->cantidad_de_memoria = memoria_vector;
 	return simpletron;
 }
 /*ACA OJO QUE JODE LO DE RETVAL XD*/

@@ -11,19 +11,20 @@
 
 
 
-status_t crear_cargar_lista_simpletron (lista_t lista, params_t * parametros) {
+status_t crear_cargar_lista_simpletron (lista_t * lista, params_t * parametros) {
 	size_t i;
 	status_t st;
 	simpletron_t * simpletron;
-	LISTA_crear(&lista);
+	LISTA_crear(lista);
 	for (i = 0; i < parametros->cant_archivos; i++) {
+		puts("hola");
 		simpletron = simpletron_crear (parametros->cant_memoria);
-		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, parametros->cant_archivos)) != ST_OK) {
-			LISTA_destruir(&lista, &simpletron_borrar);
+		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, simpletron->cantidad_de_memoria)) != ST_OK) {
+			LISTA_destruir(lista, &simpletron_borrar);
 			return st;
 		}
-		if(LISTA_insertar_al_final(&lista, simpletron) != RV_SUCCESS) {
-			LISTA_destruir(&lista, &simpletron_borrar);
+		if(LISTA_insertar_al_final(lista, simpletron) != RV_SUCCESS) {
+			LISTA_destruir(lista, &simpletron_borrar);
 			return ST_ERROR_LISTA;
 		}
 	}

@@ -6,7 +6,8 @@
 status_t cargar_argumentos_por_omision (params_t * parametros) {
 	if (parametros == NULL)
 		return ST_ERROR_PUNTERO_NULO;
-		
+
+	
 	parametros->cant_memoria = MEMORIA_POR_OMISION;
 	parametros->fmt_salida = FMT_TXT;
 	
@@ -28,17 +29,15 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 		TXT_ARG_FMT_SALIDA_EXTENDIDO,
 		TXT_ARG_AYUDA_EXTENDIDO
 	};
-	if(!parametros || !argv)
+	if(!parametros || !argv) 
 		return ST_ERROR_PUNTERO_NULO;
 	/*al menos se debe ingresar el ejecutable y un archivo o el caracter indicador de stdin*/
 	if (MIN_ARGC > argc) {
 		return ST_ERROR_CANTIDAD_ARGUMENTOS;
 	}
-	if((st = cargar_argumentos_por_omision(parametros)) != ST_OK){
+	if((st = cargar_argumentos_por_omision(parametros)) != ST_OK)	
 		return st;
-	}
 	/*si solo hay un argumento, se asume que es un archivo*/
-	if (argc != MIN_ARGC) {
 		/* Se empieza en 1 para omitir el argumento que contiene la linea de ejecucion */
 		for(i = 1; i < MAX_MODIFICADORES; i++) {
 			for (j = 0; j < ARG_INVALIDO; j++) {
@@ -93,7 +92,7 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 				parametros->vector_datos_archivos[i].nombre_archivo = argv[i] + POSICION_COMIENZO_ARCHIVO;
 			}
 			else if(!(strcmp(argv[i], INDICADOR_STDIN))) {
-				if(parametros -> cant_archivos > 1) {
+				if(parametros->cant_archivos < 1) {
 					liberar_vector_archivos(parametros->vector_datos_archivos);
 					return ST_ERROR_ARGUMENTO_INVALIDO;
 				}
@@ -105,7 +104,6 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 				parametros->vector_datos_archivos->fmt_entrada = FMT_TXT;
 			}
 		}
-	}
 	return ST_OK;
 }
 

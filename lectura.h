@@ -13,6 +13,6 @@
 
 
 status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t memoria_pedida);
-status_t crear_cargar_lista_simpletron (lista_t lista, params_t * parametros);
+status_t crear_cargar_lista_simpletron (lista_t * lista, params_t * parametros);
 
 #endif
