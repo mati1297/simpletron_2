@@ -115,9 +115,8 @@ status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
 }*/
 
 status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
-	size_t i;
+	size_t i, j;
 	const palabra_t * aux;
-	palabra_t hola;
 	if(f_output == NULL)
 		return ST_ERROR_PUNTERO_NULO;
 	if(vector_esta_vacio(simpletron->vector))
@@ -126,13 +125,19 @@ status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 	fputc('\n', f_output);
 	for(i = 0; i < simpletron->cantidad_de_memoria; i++) {
 		if(!(i % CANT_COLS)) {
-			imprimir_ascii(simpletron->vector, i, f_output);
+			imprimir_ascii(simpletron->vector, i-CANT_COLS, i, f_output);
 			fputc('\n', f_output);
 			fprintf(f_output, "%03X:  ", i);
 		}
-		aux = vector_leer(simpletron->vector, i);
-		hola = *aux;
-		fprintf(f_output, "%04X  ", hola);
+		fprintf(f_output, "%04X  ", *vector_leer(simpletron->vector, i));
+	}
+	if(i % CANT_COLS) {
+		j = i;
+		for(; (i % CANT_COLS) != 0; i++)
+		{
+			fprintf(f_output, "      ");
+		}
+		imprimir_ascii(simpletron->vector, j - j % CANT_COLS , j, f_output);
 	}
 	fputc('\n', f_output);
 	fputc('\n', f_output);
@@ -142,11 +147,11 @@ status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 /*Recibe un puntero a la estructura vector_t y un entero para iterar.
  * Imprime la representacion ascii de la memoria en el mismo renglon.
  * En el caso de que se tenga un caracter no imprimible, se lo reemplaza por un punto*/
-void imprimir_ascii(const vector_t * vector_memoria, int i, FILE * f_output) {
+void imprimir_ascii(const vector_t * vector_memoria, size_t inicio, size_t final, FILE * f_output) {
 	palabra_t aux;
 	size_t j;
 	char c;
-	for(j = i - CANT_COLS; j < i; j++) {
+	for(j = inicio; j < final; j++) {
 		aux = *(vector_leer(vector_memoria, j));
 		c = (aux & MASK_CHAR) >> SHIFT_CHAR;
 		fputc((isprint(c))?c:CARAC_NO_IMPRIMIBLE, f_output);

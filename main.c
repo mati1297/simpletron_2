@@ -32,11 +32,11 @@ int main (int argc, const char * argv []) {
 		return EXIT_FAILURE;
 	}
 
+	/*si falla es que fallo el simpletron pero igual se imprime el dump
+	 * aunque no se si que lo hagamos asi esta bien porque el siguiente programa
+	 * ya no se llega a ejecutar, MIRA ESTO SANTI*/
 	if ((st_smp =simpletron_ejecutar_lista (&lista)) != ST_SMP_OK) {
-		liberar_vector_archivos(parametros.vector_datos_archivos);
-		LISTA_destruir(&lista, &simpletron_borrar);
 		imprimir_error_simpletron (st_smp);
-		return EXIT_FAILURE;
 	}
 
 	if ((st = imprimir_dump (lista, parametros.fmt_salida)) != ST_OK) {
@@ -45,7 +45,8 @@ int main (int argc, const char * argv []) {
 		imprimir_error (st);
 		return EXIT_FAILURE;
 	}
-	
+	/*En ningun lugar lo validamos aca tampoco se si da, no deberia fallar nunca
+	 * a no ser que se le pase un puntero nulo*/
 	if ((st_lista = LISTA_destruir (&lista, &simpletron_borrar)) != RV_SUCCESS) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		imprimir_error_lista (st_lista);
