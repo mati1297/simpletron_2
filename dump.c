@@ -16,12 +16,10 @@ status_t imprimir_dump(lista_t lista, fmt_t formato){
 		if(formato == FMT_TXT) {/*si el formato de salida es txt*/
 			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "at")))
 				return ST_ERROR_LECTURA_ARCHIVO;
-			puts("Holaasdas");
 			if(LISTA_recorrer(lista, &imprimir, f_out) != RV_SUCCESS) {
 				fclose(f_out);
 				return ST_ERROR_LISTA;
 			}
-			puts("paso la lista");
 			
 		}
 			/*while(!(lista->siguiente)){
@@ -105,7 +103,6 @@ status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 			fputc('\n',f_output);
 			i_binario = (int) i;
 			printf("%lu", i);
-			puts("Estoy aca");
 			fprintf(f_output, "%04x0:  ", i_binario);
 			
 			/*imprimir_ascii(simpletron->vector, i, f_output);*/

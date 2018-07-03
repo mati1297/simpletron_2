@@ -51,10 +51,8 @@ status_simpletron simpletron_ejecutar_lista (lista_t * lista) {
 	if(!lista)
 		return ST_SMP_ERROR_PUNTERO_NULO;
 	cargar_vector_funciones(funciones);
-	puts("hola");
 	if(LISTA_recorrer(*lista, &simpletron_ejecutar_individual, funciones) != RV_SUCCESS)
 		return ST_SMP_ERROR_LISTA;
-	puts("hola");
 	return ST_SMP_OK;
 }
 
@@ -64,20 +62,16 @@ retval_t simpletron_ejecutar_individual (void * simpletron, void * funciones) {
 	const palabra_t * aux;
 	opcode_t opcode;
 	funcion_simpletron funcion;
-	puts("Holasoy la funcion");
 	for(simple->contador = 0;;) {
 			if(!(aux = vector_leer(simple->vector, simple->contador)))
 				return ST_SMP_ERROR_EJECUCION;
 			simple->registro = *aux;
 			printf("%hd\n", simple->registro);
-			puts("Holiwis");
 			if((opcode = palabra_leer_opcode(simple->registro)) == OP_HALT)
 				break;
 			printf("%d\n", opcode);
-			puts("sera?");
 			if(!(funcion = buscar_vector_funciones(func, opcode)))
 				return ST_SMP_ERROR_EJECUCION;
-			puts("holi soy la funcion");
 			printf("%p", funcion);
 			(*funcion)(simple);
 		}
@@ -92,7 +86,6 @@ funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode)
 		return NULL;
 	for (i = 0; i < CANTIDAD_DE_FUNCIONES; i++) {
 		printf("%d", opcode);
-		puts("bucando..");
 		if(opcode == vector[i].opcode)
 			return vector[i].funcion;
 	}
@@ -134,7 +127,6 @@ status_simpletron simpletron_escribir (simpletron_t * simpletron) {
 	const palabra_t * dato;
 	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))));
 		return ST_SMP_ERROR_EJECUCION;
-	puts("hola soy la funcion de mierda");
 	printf("%s %lu:+07%ld\n", MSJ_POSICION, palabra_leer_operando(simpletron->registro), palabra_unir(*dato));
 	simpletron->contador++;
 	return ST_SMP_OK;

@@ -8,21 +8,16 @@
 #include "error.h"
 #include "tda_lista.h"
 
-
-
-
 status_t crear_cargar_lista_simpletron (lista_t * lista, params_t * parametros) {
 	size_t i;
 	status_t st;
 	simpletron_t * simpletron;
 	LISTA_crear(lista);
 	for (i = 0; i < parametros->cant_archivos; i++) {
-		puts("hola");
 		simpletron = simpletron_crear (parametros->cant_memoria);
 		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, simpletron->cantidad_de_memoria)) != ST_OK) {
 			LISTA_destruir(lista, &simpletron_borrar);
 			return st;
-		}
 		if(LISTA_insertar_al_final(lista, simpletron) != RV_SUCCESS) {
 			LISTA_destruir(lista, &simpletron_borrar);
 			return ST_ERROR_LISTA;
@@ -31,9 +26,7 @@ status_t crear_cargar_lista_simpletron (lista_t * lista, params_t * parametros) 
 	return ST_OK;
 }
 
-
-/*Pueden faltar cosas, revisar, creo que esta todo
- * ESTA FUCION SE VA A LLAMAR POR CADA ARCHIVO QUE SE LEA*/
+/* ESTA FUCION SE VA A LLAMAR POR CADA ARCHIVO QUE SE LEA*/
 status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t memoria_pedida) {
 	FILE * file;
 	char buffer [MAX_LARGO], *endp;
@@ -56,7 +49,6 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 				continue;
 			cortar_delimitador (buffer, DELIMITADOR_COMENTARIO);
 			aux = strtol (buffer, &endp, 10);
-			
 			if (*endp) {
 				fclose (file);
 				return ST_ERROR_INSTRUCCION_INVALIDA;

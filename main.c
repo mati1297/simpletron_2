@@ -26,15 +26,12 @@ int main (int argc, const char * argv []) {
 		return EXIT_SUCCESS;
 	}
 	
-	
 	if ((st = crear_cargar_lista_simpletron (&lista, &parametros)) != ST_OK) {
 		imprimir_error (st);
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		return EXIT_FAILURE;
 	}
 
-	
-	
 	if ((st_smp =simpletron_ejecutar_lista (&lista)) != ST_SMP_OK) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		LISTA_destruir(&lista, &simpletron_borrar);
@@ -42,18 +39,12 @@ int main (int argc, const char * argv []) {
 		return EXIT_FAILURE;
 	}
 	
-	puts("hola=)");
-	
-	
-	
 	if ((st = imprimir_dump (lista, parametros.fmt_salida)) != ST_OK) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		LISTA_destruir(&lista, &simpletron_borrar);
 		imprimir_error (st);
 		return EXIT_FAILURE;
 	}
-	
-	puts("Hola rochi no se equivoco=)");
 	
 	if ((st_lista = LISTA_destruir (&lista, &simpletron_borrar)) != RV_SUCCESS) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
