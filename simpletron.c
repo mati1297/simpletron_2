@@ -58,19 +58,28 @@ status_simpletron simpletron_ejecutar_lista (lista_t * lista) {
 	return ST_SMP_OK;
 }
 
-status_simpletron simpletron_ejecutar_individual (simpletron_t * simpletron, funcion_t * funciones) {
+retval_t simpletron_ejecutar_individual (void * simpletron, void * funciones) {
+	simpletron_t * simple = (simpletron_t *) simpletron;
+	funcion_t * func = (funcion_t *) funciones;
 	const palabra_t * aux;
 	opcode_t opcode;
 	funcion_simpletron funcion;
-	for(simpletron->contador = 0;;) {
-			if(!(aux = vector_leer(simpletron->vector, simpletron->contador)))
+	puts("Holasoy la funcion");
+	for(simple->contador = 0;;) {
+			if(!(aux = vector_leer(simple->vector, simple->contador)))
 				return ST_SMP_ERROR_EJECUCION;
-			simpletron->registro = *aux;
-			if((opcode = palabra_leer_opcode(simpletron->registro) == OP_HALT))
+			simple->registro = *aux;
+			printf("%hd\n", simple->registro);
+			puts("Holiwis");
+			if((opcode = palabra_leer_opcode(simple->registro)) == OP_HALT)
 				break;
-			if(!(funcion = buscar_vector_funciones(funciones, opcode)))
+			printf("%d\n", opcode);
+			puts("sera?");
+			if(!(funcion = buscar_vector_funciones(func, opcode)))
 				return ST_SMP_ERROR_EJECUCION;
-			(*funcion) (simpletron);
+			puts("holi soy la funcion");
+			printf("%p", funcion);
+			(*funcion)(simple);
 		}
 	return ST_SMP_OK;
 }
@@ -82,6 +91,8 @@ funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode)
 	if(!vector)
 		return NULL;
 	for (i = 0; i < CANTIDAD_DE_FUNCIONES; i++) {
+		printf("%d", opcode);
+		puts("bucando..");
 		if(opcode == vector[i].opcode)
 			return vector[i].funcion;
 	}
@@ -123,6 +134,7 @@ status_simpletron simpletron_escribir (simpletron_t * simpletron) {
 	const palabra_t * dato;
 	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))));
 		return ST_SMP_ERROR_EJECUCION;
+	puts("hola soy la funcion de mierda");
 	printf("%s %lu:+07%ld\n", MSJ_POSICION, palabra_leer_operando(simpletron->registro), palabra_unir(*dato));
 	simpletron->contador++;
 	return ST_SMP_OK;

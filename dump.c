@@ -16,11 +16,13 @@ status_t imprimir_dump(lista_t lista, fmt_t formato){
 		if(formato == FMT_TXT) {/*si el formato de salida es txt*/
 			if(!(f_out = fopen(NOMBRE_ARCHIVO_STANDARD_TXT, "at")))
 				return ST_ERROR_LECTURA_ARCHIVO;
-				
+			puts("Holaasdas");
 			if(LISTA_recorrer(lista, &imprimir, f_out) != RV_SUCCESS) {
 				fclose(f_out);
 				return ST_ERROR_LISTA;
 			}
+			puts("paso la lista");
+			
 		}
 			/*while(!(lista->siguiente)){
 				if((st = imprimir_registros (lista->dato, f_out)) != ST_OK) {
@@ -58,8 +60,8 @@ status_t imprimir (const simpletron_t * simpletron, FILE * f_output) {
 	status_t st;
 	if((st = imprimir_registros(simpletron, f_output)) != ST_OK)
 		return st;
-	if((st = imprimir_memoria(simpletron, f_output)) != ST_OK)
-		return st;
+	/*if((st = imprimir_memoria(simpletron, f_output)) != ST_OK)
+		return st;*/
 	return ST_OK;
 }
 
@@ -75,7 +77,7 @@ status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
 	fprintf(f_output, "%16s", MSJ_CONTADOR);
 	fprintf(f_output, "%9lu\n", simpletron->contador);
 	fprintf(f_output, "%16s", MSJ_INSTRUCCION);
-	fprintf(f_output, "%+9d\n", simpletron->registro);
+	fprintf(f_output, "%+9ld\n", palabra_unir(simpletron->registro));
 	fprintf(f_output, "%16s", MSJ_OPCODE);
 	fprintf(f_output, "%16d\n", palabra_leer_opcode(simpletron->registro));
 	fprintf(f_output, "%16s", MSJ_OPERANDO);
@@ -102,9 +104,13 @@ status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 		if(!(i % CANT_COLS)){
 			fputc('\n',f_output);
 			i_binario = (int) i;
+			printf("%lu", i);
+			puts("Estoy aca");
 			fprintf(f_output, "%04x0:  ", i_binario);
-			imprimir_ascii(simpletron->vector, i, f_output);
+			
+			/*imprimir_ascii(simpletron->vector, i, f_output);*/
 		}
+		
 		fprintf(f_output, "%hu  ", *(vector_leer(simpletron->vector, i)));
 	}
 	return ST_OK;

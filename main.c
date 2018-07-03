@@ -46,12 +46,12 @@ int main (int argc, const char * argv []) {
 	
 	
 	
-	/*if ((st = imprimir_dump (lista, parametros.fmt_salida)) != ST_OK) {
+	if ((st = imprimir_dump (lista, parametros.fmt_salida)) != ST_OK) {
 		liberar_vector_archivos(parametros.vector_datos_archivos);
 		LISTA_destruir(&lista, &simpletron_borrar);
 		imprimir_error (st);
 		return EXIT_FAILURE;
-	}*/
+	}
 	
 	puts("Hola rochi no se equivoco=)");
 	
