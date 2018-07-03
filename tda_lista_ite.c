@@ -246,9 +246,11 @@ retval_t LISTA_imprimir(lista_t plista, FILE * ofile, retval_t (*impresor)(void 
  * argumento pasado como argumento. 
  * Devuelve un estado por el nombre */
 retval_t LISTA_recorrer(lista_t plista, retval_t (*funcion)(void *, void *), void * argumento) {
+	retval_t st;
     if(funcion != NULL) {
         while(plista != NULL) {
-            (*funcion)(plista->dato, argumento);
+            if((st = (*funcion)(plista->dato, argumento)) != RV_SUCCESS)
+				return st;
             plista = plista->siguiente;
         }
     }

@@ -82,26 +82,27 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 				return ST_ERROR_MEMORIA_INSUFICIENTE;
 				
 		/*Comienza la lectura de los nombres de archivos*/
-		for(; i < argc; i++) {
+		for(j = 0; i < argc; j++, i++) {
 			
-			
-			if(!strncmp(argv[i], INDICADOR_BIN, strlen(INDICADOR_BIN)))
-				parametros->vector_datos_archivos[i].fmt_entrada = FMT_BIN;
-			else if(!strncmp(argv[i], INDICADOR_TXT, strlen(INDICADOR_TXT))) {
-				parametros->vector_datos_archivos[i].fmt_entrada = FMT_TXT;
-				parametros->vector_datos_archivos[i].nombre_archivo = argv[i] + POSICION_COMIENZO_ARCHIVO;
+			if(!(strncmp(argv[i], INDICADOR_BIN, strlen(INDICADOR_BIN)))) {
+				parametros->vector_datos_archivos[j].fmt_entrada = FMT_BIN;
+				parametros->vector_datos_archivos[j].nombre_archivo = argv[i] + POSICION_COMIENZO_ARCHIVO;
+			}
+			else if(!(strncmp(argv[i], INDICADOR_TXT, strlen(INDICADOR_TXT)))) {
+				parametros->vector_datos_archivos[j].fmt_entrada = FMT_TXT;
+				parametros->vector_datos_archivos[j].nombre_archivo = argv[i] + POSICION_COMIENZO_ARCHIVO;
 			}
 			else if(!(strcmp(argv[i], INDICADOR_STDIN))) {
-				if(parametros->cant_archivos < 1) {
+				if(parametros->cant_archivos > 1) {
 					liberar_vector_archivos(parametros->vector_datos_archivos);
 					return ST_ERROR_ARGUMENTO_INVALIDO;
 				}
-				parametros->vector_datos_archivos->fmt_entrada = FMT_TXT;
-				parametros->vector_datos_archivos->nombre_archivo = argv[i];
+				parametros->vector_datos_archivos[j].fmt_entrada = FMT_TXT;
+				parametros->vector_datos_archivos[j].nombre_archivo = argv[i];
 			}
 			else {
-				parametros->vector_datos_archivos->nombre_archivo = argv[i];
-				parametros->vector_datos_archivos->fmt_entrada = FMT_TXT;
+				parametros->vector_datos_archivos[j].nombre_archivo = argv[i];
+				parametros->vector_datos_archivos[j].fmt_entrada = FMT_TXT;
 			}
 		}
 	return ST_OK;

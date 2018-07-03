@@ -12,12 +12,14 @@ status_t crear_cargar_lista_simpletron (lista_t * lista, params_t * parametros) 
 	size_t i;
 	status_t st;
 	simpletron_t * simpletron;
+	if(!parametros)
 	LISTA_crear(lista);
 	for (i = 0; i < parametros->cant_archivos; i++) {
 		simpletron = simpletron_crear (parametros->cant_memoria);
 		if((st = leer_guardar_archivo(&(parametros->vector_datos_archivos[i]), simpletron->vector, simpletron->cantidad_de_memoria)) != ST_OK) {
 			LISTA_destruir(lista, &simpletron_borrar);
 			return st;
+		}
 		if(LISTA_insertar_al_final(lista, simpletron) != RV_SUCCESS) {
 			LISTA_destruir(lista, &simpletron_borrar);
 			return ST_ERROR_LISTA;
@@ -41,7 +43,7 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 		else if (!(file = fopen(archivo->nombre_archivo, "rt")))
 			return ST_ERROR_LECTURA_ARCHIVO;
 		for (i = 0; fgets (buffer, MAX_LARGO, file); i++) {
-			if (i > memoria_pedida) {
+			if (i >= memoria_pedida) {
 				fclose (file);
 				return ST_ERROR_CANTIDAD_PALABRAS_INVALIDA;
 			}

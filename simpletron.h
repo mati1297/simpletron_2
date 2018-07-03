@@ -20,6 +20,7 @@
 #define MIN_NUMERO -9999999
 #define MIN_NUMERO_NEGATIVO_GUARDAR -32767
 #define MASK_NUMERO_NEGATIVO 0x7FFF
+#define PALABRA_VACIA "\n"
 
 
 typedef short int palabra_t;
@@ -50,7 +51,7 @@ typedef enum {
 	OP_PCARGAR = 22,
 	OP_PGUARDAR = 23,
 	OP_SUMAR = 30,
-	OP_RESTAR = 21,
+	OP_RESTAR = 31,
 	OP_DIVIDIR = 32,
 	OP_MULTIPLICAR = 33,
 	OP_JMP = 40,

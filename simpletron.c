@@ -62,18 +62,17 @@ retval_t simpletron_ejecutar_individual (void * simpletron, void * funciones) {
 	const palabra_t * aux;
 	opcode_t opcode;
 	funcion_simpletron funcion;
+	retval_t st;
 	for(simple->contador = 0;;) {
 			if(!(aux = vector_leer(simple->vector, simple->contador)))
 				return ST_SMP_ERROR_EJECUCION;
 			simple->registro = *aux;
-			printf("%hd\n", simple->registro);
 			if((opcode = palabra_leer_opcode(simple->registro)) == OP_HALT)
 				break;
-			printf("%d\n", opcode);
 			if(!(funcion = buscar_vector_funciones(func, opcode)))
 				return ST_SMP_ERROR_EJECUCION;
-			printf("%p", funcion);
-			(*funcion)(simple);
+			if((st = (*funcion)(simpletron)) != ST_SMP_OK)
+				return st;
 		}
 	return ST_SMP_OK;
 }
@@ -85,7 +84,6 @@ funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode)
 	if(!vector)
 		return NULL;
 	for (i = 0; i < CANTIDAD_DE_FUNCIONES; i++) {
-		printf("%d", opcode);
 		if(opcode == vector[i].opcode)
 			return vector[i].funcion;
 	}
@@ -96,7 +94,7 @@ funcion_simpletron buscar_vector_funciones (funcion_t * vector, opcode_t opcode)
  * devuelve el estado por nombre*/
 status_simpletron simpletron_cargar (simpletron_t * simpletron) {
 	const palabra_t * dato;
-	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))))
+	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro)))) 
 		return ST_SMP_ERROR_EJECUCION;
 	simpletron->acc = palabra_unir(*dato);
 	simpletron->contador++;
@@ -109,14 +107,21 @@ status_simpletron simpletron_leer (simpletron_t * simpletron) {
 	char buffer [MAX_LARGO], * endp;
 	status_simpletron st;
 	palabra_t dato;
+	if(!simpletron)
+		return ST_SMP_ERROR_PUNTERO_NULO;
+	puts(MSJ_INGRESO_PALABRA);
 	if(!fgets(buffer, MAX_LARGO, stdin))
+		return ST_SMP_ERROR_EJECUCION;
+	if(!strcmp(buffer, PALABRA_VACIA))
 		return ST_SMP_ERROR_EJECUCION;
 	if((st = palabra_validar_generar(strtol(buffer, &endp, 10), &dato)) != ST_SMP_OK)
 		return st;
-	if(*endp)
+	if(*endp != '\n' && *endp) 
 		return ST_SMP_ERROR_EJECUCION;
+		
 	if(vector_guardar(simpletron->vector, palabra_leer_operando(simpletron->registro), &dato, &palabra_copiar, &palabra_destruir) != ST_VEC_OK)
 		return ST_SMP_ERROR_EJECUCION;
+	
 	simpletron->contador++;
 	return ST_SMP_OK;
 }
@@ -125,9 +130,10 @@ status_simpletron simpletron_leer (simpletron_t * simpletron) {
  * el estado por el nombre*/
 status_simpletron simpletron_escribir (simpletron_t * simpletron) {
 	const palabra_t * dato;
-	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))));
+	
+	if(!(dato = vector_leer(simpletron->vector, palabra_leer_operando(simpletron->registro))))
 		return ST_SMP_ERROR_EJECUCION;
-	printf("%s %lu:+07%ld\n", MSJ_POSICION, palabra_leer_operando(simpletron->registro), palabra_unir(*dato));
+	printf("%s %lu:%+07ld\n", MSJ_POSICION, palabra_leer_operando(simpletron->registro), palabra_unir(*dato));
 	simpletron->contador++;
 	return ST_SMP_OK;
 }
@@ -235,9 +241,12 @@ status_simpletron simpletron_jmpneg (simpletron_t * simpletron) {
 	status_simpletron st;
 	if(!simpletron)
 		return ST_SMP_ERROR_PUNTERO_NULO;
-	if(simpletron->acc < 0)
+	if(simpletron->acc < 0) {
 		if((st = simpletron_jmp(simpletron)) != ST_SMP_OK)
 			return st;
+	}
+	else
+		 simpletron->contador++;
 	return ST_SMP_OK;
 }
 
@@ -245,9 +254,12 @@ status_simpletron simpletron_jmpneg (simpletron_t * simpletron) {
  * Para ello llama a la funcion simpletron_jmp. Devuelve el estado por el nombre*/
 status_simpletron simpletron_jmpzero (simpletron_t * simpletron) {
 	status_simpletron st;
-	if(simpletron->acc == 0)
+	if(simpletron->acc == 0) {
 		if((st = simpletron_jmp(simpletron)) != ST_SMP_OK)
 			return st;
+	}
+	else 
+		simpletron->contador++;
 	return ST_SMP_OK;
 }
 
@@ -255,9 +267,12 @@ status_simpletron simpletron_jmpzero (simpletron_t * simpletron) {
  * Para ello llama a la funcion simpletron_jmp. Devuelve el estado por el nombre*/
 status_simpletron simpletron_jnz (simpletron_t * simpletron) {
 	status_simpletron st;
-	if(simpletron->acc != 0)
+	if(simpletron->acc != 0) {
 		if((st = simpletron_jmp(simpletron)) != ST_SMP_OK)
 			return st;
+	}
+	else
+		simpletron->contador++;
 	return ST_SMP_OK;
 }
 
@@ -265,9 +280,12 @@ status_simpletron simpletron_jnz (simpletron_t * simpletron) {
  * es cero. Para ello llama a la funcion simpletron_jmp. Devuelve el estado por el nombre*/
 status_simpletron simpletron_djnz (simpletron_t * simpletron) {
 	status_simpletron st;
-	if((--(simpletron->acc)) != 0)
+	if((--(simpletron->acc)) != 0) {
 		if((st = simpletron_jmp(simpletron)) != ST_SMP_OK)
 			return st;
+	}
+	else
+		simpletron->contador++;
 	return ST_SMP_OK;
 }
 
