@@ -47,9 +47,9 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 				fclose (file);
 				return ST_ERROR_CANTIDAD_PALABRAS_INVALIDA;
 			}
+			cortar_delimitador (buffer, DELIMITADOR_COMENTARIO);
 			if (!recortar_espacios (buffer))
 				continue;
-			cortar_delimitador (buffer, DELIMITADOR_COMENTARIO);
 			aux = strtol (buffer, &endp, 10);
 			if (*endp && *endp != '\n') {
 				fclose (file);
