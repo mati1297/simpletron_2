@@ -1,13 +1,13 @@
-Ingresó -h por lo que a continuación se presenta una ayuda sobre los parametros que pueden pasarse
+Ingresó -h o --help por lo que a continuación se presenta una ayuda sobre los parametros que pueden pasarse
 al compilar para configurar el Simpletron.
 
-* -m :
-    luego de "-m" se ingresa la cantidad de memoria (un numero entero) que tendra Simpletron. Si
+* -m o --memoria:
+    luego de "-m" o "--memoria" se ingresa la cantidad de memoria (un numero entero) que tendra Simpletron. Si
     no ingresa el parámetro, se considerara que tiene 50 palabras, donde cada palabra es una
     instrucción.
     
-* -f :
-	luego de "-f" se ingresa el formato en el cual se quiere obtener la devolusion del programa (dump): ingresar "bin" o "txt" segun se requiera binario o texto.
+* -f o --formato:
+	luego de "-f" o "--formato"se ingresa el formato en el cual se quiere obtener la devolusion del programa (dump): ingresar "bin" o "txt" segun se requiera binario o texto.
 	En el caso de no ingresar este parametro se asumira que el formato de salida es txt.
 	
 Luego de los parametros, que pueden ir en el orden que desee, se deben ingresar los archivos de los cuales se leeran las instrucciones.
