@@ -1,10 +1,10 @@
-You entered –h, so consecutively an assistant with information about the usable parameters is shown.
+You entered –h or --help, so consecutively an assistant with information about the usable parameters is shown.
 You can use them at compiling in order to configurate the Simpletron.
-* -m :
-    After "-m", you enter the amount of memory that Simpletron is going to have (whole numbers only).
+* -m or --memory:
+    After "-m" or "memory", you enter the amount of memory that Simpletron is going to have (whole numbers only).
     If this parameter is not entered, it's considered that Simpletron has 50 words, where 1 word corresponds to 1 instruction.
-* -f :
-	After "-f", you enter the format in which you want the program to express the dump: you enter "bin" or "txt" according to binary or text requirements.
+* -f or --format:
+	After "-f" or "--format", you enter the format in which you want the program to express the dump: you enter "bin" or "txt" according to binary or text requirements.
   In case of not entering this parameter, it's assumed that the required format is txt.
 After the parameters –entered in any wanted order-, you must enter the files where instructions will be read from.
 In order to do that, enter "-" in case the instrucciones will be read from stdin. Otherwise, enter the files' name separated by spaces.
