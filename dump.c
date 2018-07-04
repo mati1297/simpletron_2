@@ -60,7 +60,7 @@ status_t imprimir_registros (const simpletron_t * simpletron, FILE * f_output) {
 		return ST_ERROR_PUNTERO_NULO;
 	fprintf(f_output, "%s:\n\n", MSJ_REGISTROS);
 	fprintf(f_output, "%16s", MSJ_ACUMULADOR);
-	fprintf(f_output, "%9X\n", simpletron->acc);
+	fprintf(f_output, "%9X\n", (unsigned int)simpletron->acc);
 	fprintf(f_output, "%16s", MSJ_CONTADOR);
 	fprintf(f_output, "%9lu\n", simpletron->contador);
 	fprintf(f_output, "%16s", MSJ_INSTRUCCION);
@@ -93,7 +93,7 @@ status_t imprimir_memoria (const simpletron_t * simpletron, FILE * f_output) {
 		if(!(i % CANT_COLS)) {
 			imprimir_ascii(simpletron->vector, i-CANT_COLS, i, f_output);
 			fputc('\n', f_output);
-			fprintf(f_output, "%03X:  ", i);
+			fprintf(f_output, "%03X:  ", (unsigned int) i);
 		}
 		fprintf(f_output, "%04X  ", *vector_leer(simpletron->vector, i));
 	}
