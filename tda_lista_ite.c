@@ -244,6 +244,8 @@ retval_t LISTA_imprimir(lista_t plista, FILE * ofile, retval_t (*impresor)(void 
  * para dicha función. Se itera mientras no sea nulo el puntero al nodo,
  * llamando a la función pasada como argumento con el dato del nodo y el
  * argumento pasado como argumento. 
+ * NOTA: se modificó la función para que devuelva el estado de la funcion
+ * que ejecuta.
  * Devuelve un estado por el nombre */
 retval_t LISTA_recorrer(lista_t plista, retval_t (*funcion)(void *, void *), void * argumento) {
 	retval_t st;
