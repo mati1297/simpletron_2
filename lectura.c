@@ -40,8 +40,9 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 	if (archivo->fmt_entrada == FMT_TXT) {
 		if (!strcmp(archivo->nombre_archivo, INDICADOR_STDIN))
 			file = stdin;
-		else if (!(file = fopen(archivo->nombre_archivo, "rt")))
+		else if (!(file = fopen(archivo->nombre_archivo, "rt"))) {
 			return ST_ERROR_LECTURA_ARCHIVO;
+		}
 		for (i = 0; fgets (buffer, MAX_LARGO, file); i++) {
 			if (i >= memoria_pedida) {
 				fclose (file);
@@ -67,8 +68,9 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 	}
 		/*Ya se lee como palabra_t*/
 	else {
-		if (!(file = fopen(archivo->nombre_archivo, "rb")))
-		return ST_ERROR_LECTURA_ARCHIVO;
+		if (!(file = fopen(archivo->nombre_archivo, "rb"))) {
+			return ST_ERROR_LECTURA_ARCHIVO;
+		}
 		for (i = 0; fread (&dato, sizeof (palabra_t), 1, file) != 1; i++) {
 			if (i > memoria_pedida) {
 				fclose (file);
@@ -78,7 +80,6 @@ status_t leer_guardar_archivo (archivo_t * archivo, vector_t * vector, size_t me
 			/* guardamos el dato como viene, es decir, asumimos que el dato en binario viene como para meterlo de una en simpletron */
 		}
 	}
-	
 	if (!feof (file)) {
 		fclose (file);
 		return ST_ERROR_LECTURA_ARCHIVO;

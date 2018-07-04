@@ -50,6 +50,8 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 			switch (j) {
 				case ARG_MEMORIA:
 					i++;
+					if(i >= argc)
+						return ST_ERROR_ARGUMENTO_INVALIDO;
 					aux = (size_t) strtol(argv[i], &endp, 10);
 					if(*endp)
 						return ST_ERROR_ARGUMENTO_INVALIDO;
@@ -59,6 +61,8 @@ status_t procesar_argumentos (const int argc, const char * argv [], params_t * p
 					break;
 				case ARG_FMT_SALIDA:
 					i++;
+					if(i >= argc)
+						return ST_ERROR_ARGUMENTO_INVALIDO;
 					if (!strcmp (argv[i], TXT_INDICADOR_BINARIO))
 						parametros->fmt_salida = FMT_BIN;
 					else if (!strcmp (argv[i], TXT_INDICADOR_TEXTO))
